@@ -165,7 +165,8 @@ export default {
                 enabled: ["GateWay", "LogRotate", "Jessica"].includes(name),
                 Path:
                     "github.com/Monibuca/" +
-                    this.$store.state.defaultPlugins[name][0]+"plugin",
+                    this.$store.state.defaultPlugins[name][0] +
+                    "plugin",
                 Config: this.$store.state.defaultPlugins[name][1],
                 Description: this.$store.state.defaultPlugins[name][2]
             };
@@ -194,7 +195,7 @@ export default {
             return Object.values(this.plugins)
                 .filter(x => x.enabled)
                 .map(
-                    x => `[Plugins.${x.Name}]
+                    x => `[${x.Name}]
 ${x.Config || ""}`
                 )
                 .join("\n");
