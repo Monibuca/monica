@@ -21,7 +21,7 @@
                                 style="width:200px;margin:5px"
                             >
                                 <Poptip
-                                    :content="item.Description"
+                                    :content="item.Desc"
                                     slot="extra"
                                     width="200"
                                     word-wrap
@@ -171,7 +171,7 @@ export default {
                     this.$store.state.defaultPlugins[name][0] +
                     "plugin",
                 Config: this.$store.state.defaultPlugins[name][1],
-                Description: this.$store.state.defaultPlugins[name][2]
+                Desc: this.$store.state.defaultPlugins[name][2]
             };
         }
         return {
@@ -230,6 +230,7 @@ ${x.Config || ""}`
         },
         addPlugin() {
             this.plugins[this.formPlugin.Name] = this.formPlugin;
+            this.formPlugin.enabled = true
             this.formPlugin = {};
             this.addPluginTab = 0;
         },
@@ -245,6 +246,14 @@ ${x.Config || ""}`
                     this.$Message.error("访问插件市场错误！");
                 });
         }
+    },
+    mounted() {
+        window.ajax
+            .getJSON("https://plugins.monibuca.com/recommend")
+            .then(x => (this.searchPluginResult = x))
+            .catch(() => {
+                this.$Message.error("访问插件市场错误！");
+            });
     }
 };
 </script>
