@@ -103,7 +103,10 @@
                     <i-input search placeholder="find plugins in market" @on-search="searchPlugin"></i-input>
                     <List border>
                         <ListItem v-for="item in searchPluginResult" :key="item">
-                            <ListItemMeta :title="item.Name" :description="item.Desc"></ListItemMeta>
+                            <ListItemMeta
+                                :title="(item.UI?'📈':'🧩')+item.Name"
+                                :description="item.Desc"
+                            ></ListItemMeta>
                             <template slot="action">
                                 <li>
                                     <a :href="'//'+item.Path" target="_blank">查看</a>
