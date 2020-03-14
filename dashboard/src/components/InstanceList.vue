@@ -101,10 +101,10 @@
                 window.open(this.gateWayHref(item), '_blank')
             },
             hasGateway(item) {
-                return item.Config.Plugins.hasOwnProperty("GateWay")
+                return item.Config.hasOwnProperty("GateWay")
             },
             gateWayHref(item) {
-                return "http://" + location.hostname + ":" + item.Config.Plugins.GateWay.ListenAddr.split(":").pop()
+                return "http://" + location.hostname + ":" + item.Config.GateWay.ListenAddr.split(":").pop()
             },
             restart() {
                 let item = this.currentItem
