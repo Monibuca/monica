@@ -4,6 +4,8 @@ github.com/Monibuca/engine v1.0.2 h1:UpPAEQVYrVQrLr9GVGcbu8x5Oiemqd5J2zjGZ/Fhg74
 github.com/Monibuca/engine v1.0.2/go.mod h1:NjqVgtXuRSOyk3+NWgCuDf2p7TsBisjYxoEwA9uCZ38=
 github.com/Monibuca/engine v1.1.0 h1:X/dEUWpASCPESYx1cGXk5pp73Egiou5obGUEfrRZUdg=
 github.com/Monibuca/engine v1.1.0/go.mod h1:NjqVgtXuRSOyk3+NWgCuDf2p7TsBisjYxoEwA9uCZ38=
+github.com/Monibuca/engine v1.1.1 h1:wk5qBJCssCOpeA7jyGU/oInVmFnfc9r+eT+sbjOIZfw=
+github.com/Monibuca/engine v1.1.1/go.mod h1:NjqVgtXuRSOyk3+NWgCuDf2p7TsBisjYxoEwA9uCZ38=
 github.com/StackExchange/wmi v0.0.0-20190523213315-cbe66965904d h1:G0m3OIz70MZUWq3EgK3CesDbo8upS2Vm9/P3FtgI+Jk=
 github.com/StackExchange/wmi v0.0.0-20190523213315-cbe66965904d/go.mod h1:3eOhrUMpNV+6aFIbp5/iudMxNCF27Vw2OZgy4xEx0Fg=
 github.com/beevik/etree v1.1.0/go.mod h1:r8Aw8JqVegEf0w2fDnATrX9VpkMcyFeM0FhwO62wh+A=

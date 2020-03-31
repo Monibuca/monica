@@ -6,7 +6,6 @@ import (
 	"os"
 	"os/exec"
 	"path"
-	"strings"
 
 	"github.com/Monibuca/engine/util"
 )
@@ -63,9 +62,7 @@ func main(){
 		return
 	}
 	sse.WriteEvent("step", []byte("5:go build 成功！"))
-	binFile := strings.TrimSuffix(p.Path, "/")
-	_, binFile = path.Split(binFile)
-	if err = p.CreateRestartFile(binFile); err != nil {
+	if err = p.CreateRestartFile(p.Name); err != nil {
 		return
 	}
 	return sse.WriteExec(p.RestartCmd())
