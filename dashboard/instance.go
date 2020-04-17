@@ -27,7 +27,7 @@ func (p *InstanceDesc) CreateDir(sse *util.SSE, clearDir bool) (err error) {
 	if clearDir {
 		err = os.RemoveAll(p.Path)
 	}
-	if err = os.MkdirAll(p.Path, 0666); err != nil {
+	if err = os.MkdirAll(p.Path, 0777); err != nil {
 		return
 	}
 	sse.WriteEvent("step", []byte("2:目录创建成功！"))
