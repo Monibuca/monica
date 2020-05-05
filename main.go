@@ -19,8 +19,8 @@ import (
 	"strings"
 
 	"github.com/BurntSushi/toml"
-	. "github.com/Monibuca/engine"
-	"github.com/Monibuca/engine/util"
+	. "github.com/Monibuca/engine/v2"
+	"github.com/Monibuca/engine/v2/util"
 	"github.com/Monibuca/monica/dashboard"
 )
 

@@ -175,9 +175,8 @@ export default {
                 Name: name,
                 enabled: ["GateWay", "LogRotate", "Jessica"].includes(name),
                 Path:
-                    "github.com/Monibuca/" +
-                    this.$store.state.defaultPlugins[name][0] +
-                    "plugin",
+                    "github.com/Monibuca/plugin-" +
+                    this.$store.state.defaultPlugins[name][0]                     ,
                 Config: this.$store.state.defaultPlugins[name][1],
                 Desc: this.$store.state.defaultPlugins[name][2]
             };
