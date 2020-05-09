@@ -37,7 +37,7 @@ func (p *InstanceDesc) CreateDir(sse *util.SSE, clearDir bool) (err error) {
 	var build bytes.Buffer
 	build.WriteString(`package main
 import(
-"github.com/Monibuca/engine"`)
+. "github.com/Monibuca/engine/v2"`)
 	for _, plugin := range p.Plugins {
 		build.WriteString("\n_ \"")
 		build.WriteString(plugin)
@@ -46,7 +46,7 @@ import(
 	build.WriteString("\n)\n")
 	build.WriteString(`
 func main(){
-	engine.Run("config.toml")
+	Run("config.toml")
 	select{}
 }
 `)
