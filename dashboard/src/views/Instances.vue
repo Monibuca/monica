@@ -205,7 +205,8 @@ export default {
         configStr() {
             return (
                 `[Monibuca]
-EnableWaitRoom = ${this.enableWaitRoom ? "true" : "false"}
+EnableWaitStream = ${this.enableWaitRoom ? "true" : "false"}
+RingSize = 10
 ` +
                 Object.values(this.plugins)
                     .filter(x => x.enabled)
