@@ -22,6 +22,9 @@ const myPlugin = ({
     watcher // chokidar file watcher instance
 }) => {
     const router = new KoaRouter()
+    router.get("/api/getHomeDir", ctx => {
+        ctx.body = homedir
+    })
     router.get("/api/getGoVersion", ctx => {
         ctx.body = shell.exec("go version")
     })
@@ -84,6 +87,26 @@ const myPlugin = ({
             sink.complete()
         }).switchMap(getDataO)
         return concat(dataO1, dataO2)
+    })
+    router.get("/api/listDir", ctx => {
+        let input = ctx.query.input
+        try {
+            let basename = ""
+            if (!fs.existsSync(input)) {
+                basename = path.basename(input)
+                input = input.substr(0, input.length - basename.length)
+            }
+            ctx.body = fs.readdirSync(input).filter(name => {
+                if (basename && !name.startsWith(basename)) return false
+                try {
+                    return fs.statSync(path.join(input, name)).isDirectory()
+                } catch (e) {
+                    return false
+                }
+            }).map(text => path.join(input, text))
+        } catch (e) {
+            ctx.body = []
+        }
     })
     app.use(KoaBody())
     app.use(router.routes())

@@ -66,10 +66,7 @@
             </a-row>
         </a-layout-content>
         <a-layout-footer>
-            <a-button @click="createInstance">
-                <template v-slot:icon>
-                    <FileAddOutlined />
-                </template>
+            <a-button @click="$router.push('/create')" icon="file-add">
                 创建新实例</a-button
             >
         </a-layout-footer>
@@ -123,12 +120,11 @@
         >
             <pre v-html="updateLog"></pre>
         </a-modal>
-        <a-modal title="💡创建新实例" v-model:visible="visible.create">
-        </a-modal>
     </a-layout>
 </template>
 <script>
 import { reactive, ref, onUnmounted, getCurrentInstance } from "vue";
+
 import fastrx from "fastrx";
 const rx = fastrx.rx;
 import {
@@ -155,11 +151,13 @@ export default {
         CloudDownloadOutlined,
     },
     setup() {
-        const instances = reactive([]);
+        const instances = ref([]);
+
         const unmountedOb = rx.fromLifeHook(onUnmounted);
         const {
             ctx: { $message },
         } = getCurrentInstance();
+
         rx.interval(5000)
             .startWith(0)
             .switchMap(() =>
@@ -169,8 +167,7 @@ export default {
             )
             .takeUntil(unmountedOb)
             .subscribe((x) => {
-                instances.length = 0;
-                instances.push(...x);
+                instances.value = x;
             });
         // fetch("/api/instance/list")
         //     .then((response) => response.json())
@@ -284,9 +281,6 @@ export default {
                         (e) => e.target.close(),
                         () => {}
                     );
-            },
-            createInstance() {
-                visible.create = true;
             },
         };
         return result;

@@ -4,11 +4,13 @@ import App from './App.vue';
 import { createRouter, createWebHashHistory } from 'vue-router'
 import GoEnv from './views/GoEnv.vue'
 import Instances from './views/Instances.vue'
+import CreateInstance from './views/CreateInstance.vue'
 const router = createRouter({
     history: createWebHashHistory(),
     routes: [
         { path: '/', component: GoEnv },
-        { path: "/instances", component: Instances }
+        { path: "/instances", component: Instances },
+        { path: "/create", component: CreateInstance }
     ]
 })
 import fastrx from "fastrx";
