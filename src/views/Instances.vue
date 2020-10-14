@@ -66,7 +66,7 @@
             </a-row>
         </a-layout-content>
         <a-layout-footer>
-            <a-button @click="$router.push('/create')" icon="file-add">
+            <a-button @click="$router.push('/create')">
                 创建新实例</a-button
             >
         </a-layout-footer>
