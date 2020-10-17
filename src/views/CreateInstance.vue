@@ -39,7 +39,20 @@
                     <a-textarea autosize v-model:value="config" />
                 </a-tab-pane>
                 <a-tab-pane key="4" tab="创建">
-                    <pre>{{ log }}</pre>
+                    <a-steps direction="vertical" :current="currentStep">
+                        <a-step
+                            title="Finished"
+                            description="This is a description."
+                        />
+                        <a-step
+                            title="In Progress"
+                            description="This is a description."
+                        />
+                        <a-step
+                            title="Waiting"
+                            description="This is a description."
+                        />
+                    </a-steps>
                 </a-tab-pane>
             </a-tabs>
         </a-layout-content>
@@ -60,9 +73,11 @@
     </a-layout>
 </template>
 <script>
-import { ref, watch } from "vue";
+import { ref, watch, getCurrentInstance } from "vue";
 import PathSelector from "../components/PathSelector.vue";
 import { RightOutlined, ExportOutlined } from "@ant-design/icons-vue";
+import fastrx from "fastrx";
+const rx = fastrx.rx;
 export default {
     components: {
         PathSelector,
@@ -70,6 +85,10 @@ export default {
         ExportOutlined,
     },
     setup() {
+        const {
+            ctx: { $message },
+        } = getCurrentInstance();
+
         const path = ref("");
         const step = ref("1");
         const creating = ref(false);
@@ -142,6 +161,10 @@ StreamPath = "live/rtsp"
 # 公网IP地址
 PublicIP = "127.0.0.1"
 [GB28181]
+Serial = "34020000002000000001"
+Realm = "3402000000"
+Expires = 3600
+AutoInvite = false
 ListenAddr = "192.168.1.120:5060"`);
         const log = ref("");
         fetch("/api/getHomeDir")
@@ -152,18 +175,45 @@ ListenAddr = "192.168.1.120:5060"`);
             .then(
                 (x) => (plugins.value = x.map((y) => ((y.selected = true), y)))
             );
+        const clearDir = ref(true);
+        const currentStep = ref(0);
         return {
             path,
             step,
             plugins,
             config,
             creating,
+            clearDir,
+            currentStep,
             next() {
                 if (step.value != "4")
                     step.value = (+step.value + 1).toString();
             },
             startCreate() {
                 creating.value = true;
+                eventSource = new EventSource(
+                    "/api/instance/create?info=" +
+                        JSON.stringify(config.value) +
+                        (clearDir.value ? "&clear=true" : "")
+                );
+                eventSource.onopen = () => (log.value = "");
+                eventSource.onmessage = (evt) => {
+                    log.value += evt.data + "\n";
+                    if (evt.data == "success") {
+                        creating.value = false;
+                        eventSource.close();
+                    }
+                };
+                eventSource.addEventListener("exception", (evt) => {
+                    log.value += evt.data + "\n";
+                    creating.value = false;
+                    eventSource.close();
+                });
+                eventSource.addEventListener("step", (evt) => {
+                    let [step, msg] = evt.data.split(":");
+                    currentStep.value = step | 0;
+                    log.value += msg + "\n";
+                });
             },
         };
     },
