@@ -108,6 +108,10 @@ const myPlugin = ({
             ctx.body = []
         }
     })
+    router.get("/api/instance/create", koaEventStream, ctx => {
+        let clear = ctx.query.clear
+
+    })
     app.use(KoaBody())
     app.use(router.routes())
     app.use(async (ctx, next) => {
