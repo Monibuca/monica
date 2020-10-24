@@ -12,7 +12,7 @@ const homedir = os.homedir()
 const instancesDir = path.join(homedir, ".monibuca")
 const instanceMap = new Map()
 const { koaEventStream } = require('fastrx/extention')
-const { rx, concat } = require('fastrx')
+const { rx, concat, catchError } = require('fastrx')
 if (!fs.existsSync(instancesDir))
     fs.mkdirSync(instancesDir, { recursive: true })
 const myPlugin = ({
@@ -109,8 +109,29 @@ const myPlugin = ({
         }
     })
     router.get("/api/instance/create", koaEventStream, ctx => {
-        let clear = ctx.query.clear
-
+        const clear = ctx.query.clear
+        const dir = ctx.query.path
+        const steps = []
+        steps.push(
+            rx.bindCallback(fs.access, fs, dir).map(err => {
+                let log = "data: "
+                if (err) {
+                    fs.mkdirSync(dir, { recursive: true })
+                    log += "目录已创建\n"
+                } else {
+                    if (clear) {
+                        shell.rm("-rf", dir + "/*")
+                        log += "目录已清空\n"
+                    }
+                }
+                return log
+            }),
+            rx.of("step: 1"),
+            rx.bindNodeCallback(fs.writeFile(path.join(dir, "main.go"), require('./mainGo'))),
+            rx.of("data: 写入main.go文件"),
+            rx.bindCallback()
+        )
+        return catchError(err => rx.of("exception: " + err.toString()))(rx.concat(...steps))
     })
     app.use(KoaBody())
     app.use(router.routes())

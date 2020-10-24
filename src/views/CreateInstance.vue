@@ -167,6 +167,10 @@ ListenAddr = "192.168.1.120:5060"`);
     const currentStep = ref(0);
     const steps = reactive([
       {
+        title: "创建目录",
+        log: "",
+      },
+      {
         title: "",
         log: "",
       },
@@ -185,8 +189,10 @@ ListenAddr = "192.168.1.120:5060"`);
       startCreate() {
         creating.value = true;
         eventSource = new EventSource(
-          "/api/instance/create?info=" +
-            JSON.stringify(config.value) +
+          "/api/instance/create?path=" +
+            path.value +
+            "info=" +
+            config.value +
             (clearDir.value ? "&clear=true" : "")
         );
         eventSource.onopen = () => (log.value = "");
