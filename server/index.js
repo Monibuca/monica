@@ -109,8 +109,7 @@ const myPlugin = ({
         }
     })
     router.get("/api/instance/create", koaEventStream, ctx => {
-        const clear = ctx.query.clear
-        const dir = ctx.query.path
+        const { name, path: dir, clear } = ctx.query
         const steps = []
         steps.push(
             rx.bindCallback(fs.access, fs, dir).map(err => {
@@ -127,9 +126,20 @@ const myPlugin = ({
                 return log
             }),
             rx.of("step: 1"),
-            rx.bindNodeCallback(fs.writeFile(path.join(dir, "main.go"), require('./mainGo'))),
-            rx.of("data: 写入main.go文件"),
-            rx.bindCallback()
+            rx.bindNodeCallback(fs.writeFile(path.join(dir, "main.go"), require('./template').main))
+                .map(() => "data: 写入main.go文件"),
+            rx.bindCallback(fs.writeFile(path.join(dir, "config.toml"), require('./template').config))
+                .map(() => "data: 写入config.toml文件"),
+            rx.of("step: 2"),
+            rx.of(null).switchMap(() => {
+                const childProcess = shell.exec("go mod init " + name, { async: true })
+                return rx.merge(rx.fromEvent(childProcess.stdout, "data"), rx.fromEvent(childProcess.stderr, "data"))
+            }).map(data=>"data: "+data),
+            rx.of("step: 3"),
+            rx.of(null).switchMap(() => {
+                const childProcess = shell.exec("go build", { async: true })
+                return rx.merge(rx.fromEvent(childProcess.stdout, "data"), rx.fromEvent(childProcess.stderr, "data"))
+            }).map(data => "data: " + data),
         )
         return catchError(err => rx.of("exception: " + err.toString()))(rx.concat(...steps))
     })
