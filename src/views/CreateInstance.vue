@@ -50,7 +50,7 @@
                             :title="s.title"
                         >
                             <template v-slot:description>
-                            <pre>{{ s.log }}<pre>
+                            <pre>{{ s.log }}</pre>
                         </template
                             >
                         </a-step>
