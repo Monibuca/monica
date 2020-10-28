@@ -42,19 +42,24 @@
                     <a-textarea autosize v-model:value="config" />
                 </a-tab-pane>
                 <a-tab-pane key="5" tab="创建">
+                    <a-checkbox v-model:check="clearDir">清空目录</a-checkbox>
                     <a-steps direction="vertical" :current="currentStep">
                         <a-step
                             v-for="s in steps"
                             :key="s.title"
                             :title="s.title"
-                            :description="s.log"
-                        />
+                        >
+                            <template v-slot:description>
+                            <pre>{{ s.log }}<pre>
+                        </template
+                            >
+                        </a-step>
                     </a-steps>
                 </a-tab-pane>
             </a-tabs>
         </a-layout-content>
         <a-layout-footer>
-            <a-button @click="next" v-if="step != '4'">
+            <a-button @click="next" v-if="step != '5'">
                 <template v-slot:icon> <RightOutlined /></template>
                 下一步</a-button
             >
@@ -70,7 +75,7 @@
     </a-layout>
 </template>
 <script>
-import { ref, watch, getCurrentInstance, reactive } from "vue";
+import { ref, watch, getCurrentInstance, reactive, watchEffect } from "vue";
 import PathSelector from "../components/PathSelector.vue";
 import { RightOutlined, ExportOutlined } from "@ant-design/icons-vue";
 import fastrx from "fastrx";
@@ -179,11 +184,22 @@ ListenAddr = "192.168.1.120:5060"`);
                 log: "",
             },
             {
-                title: "",
+                title: "写入文件",
+                log: "",
+            },
+            {
+                title: "执行go mod",
+                log: "",
+            },
+            {
+                title: "执行go build",
                 log: "",
             },
         ]);
         const name = ref("");
+        watch(path, () => {
+            name.value = /[^/\\]+$/.exec(path.value);
+        });
         return {
             path,
             name,
@@ -200,13 +216,13 @@ ListenAddr = "192.168.1.120:5060"`);
             },
             startCreate() {
                 creating.value = true;
-                eventSource = new EventSource(
+                const eventSource = new EventSource(
                     "/api/instance/create?path=" +
                         path.value +
                         "&name=" +
                         name.value +
                         "&info=" +
-                        config.value +
+                        encodeURIComponent(config.value) +
                         (clearDir.value ? "&clear=true" : "")
                 );
                 eventSource.onopen = () => steps.forEach((s.log = ""));
@@ -215,6 +231,7 @@ ListenAddr = "192.168.1.120:5060"`);
                     if (evt.data == "success") {
                         creating.value = false;
                         eventSource.close();
+                        $message.success("创建完成");
                     }
                 };
                 eventSource.addEventListener("exception", (evt) => {
@@ -223,9 +240,7 @@ ListenAddr = "192.168.1.120:5060"`);
                     eventSource.close();
                 });
                 eventSource.addEventListener("step", (evt) => {
-                    let [step, msg] = evt.data.split(":");
-                    currentStep.value = step | 0;
-                    steps[currentStep.value].log += msg + "\n";
+                    currentStep.value = evt.data | 0;
                 });
             },
         };

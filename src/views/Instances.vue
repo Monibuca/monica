@@ -48,6 +48,9 @@
                                 "
                             ></div>
                             <span>{{ instance.Name }}</span>
+                            <span v-if="instance.status == 'online'"
+                                >[{{ instance.pid }}]</span
+                            >
                             <a-switch
                                 @change="
                                     (checked) =>
@@ -66,9 +69,7 @@
             </a-row>
         </a-layout-content>
         <a-layout-footer>
-            <a-button @click="$router.push('/create')">
-                创建新实例</a-button
-            >
+            <a-button @click="$router.push('/create')"> 创建新实例</a-button>
         </a-layout-footer>
         <a-modal
             :title="currentInstance.Name"

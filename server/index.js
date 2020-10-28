@@ -13,6 +13,7 @@ const instancesDir = path.join(homedir, ".monibuca")
 const instanceMap = new Map()
 const { koaEventStream } = require('fastrx/extention')
 const { rx, concat, catchError } = require('fastrx')
+const scriptExt = os.platform() == "win32" ? "bat" : "sh"
 if (!fs.existsSync(instancesDir))
     fs.mkdirSync(instancesDir, { recursive: true })
 const myPlugin = ({
@@ -38,7 +39,8 @@ const myPlugin = ({
             try {
                 const g = /\d+/.exec(fs.readFileSync(path.join(result.Path, os.platform() == "win32" ? "shutdown.bat" : "shutdown.sh")))
                 const list = await findProcess("pid", g[0])
-                if (list.length) {
+                result.pid = g[0]
+                if (list.length && list[0].name.startsWith(result.Name)) {
                     result.status = 'online'
                 } else {
                     result.status = 'offline'
@@ -109,7 +111,7 @@ const myPlugin = ({
         }
     })
     router.get("/api/instance/create", koaEventStream, ctx => {
-        const { name, path: dir, clear } = ctx.query
+        const { name, path: dir, clear, info } = ctx.query
         const steps = []
         steps.push(
             rx.bindCallback(fs.access, fs, dir).map(err => {
@@ -125,23 +127,26 @@ const myPlugin = ({
                 }
                 return log
             }),
-            rx.of("step: 1"),
-            rx.bindNodeCallback(fs.writeFile(path.join(dir, "main.go"), require('./template').main))
+            rx.of('event: step\ndata: 1'),
+            rx.bindNodeCallback(fs.writeFile, fs, path.join(dir, "main.go"), require('./template').main)
                 .map(() => "data: 写入main.go文件"),
-            rx.bindCallback(fs.writeFile(path.join(dir, "config.toml"), require('./template').config))
+            rx.bindNodeCallback(fs.writeFile, fs, path.join(dir, "config.toml"), decodeURIComponent(info))
                 .map(() => "data: 写入config.toml文件"),
-            rx.of("step: 2"),
+            rx.bindNodeCallback(fs.writeFile, fs, path.join(dir, "restart." + scriptExt), require('./template').restart(name))
+                .map(() => "data: 写入restart." + scriptExt + "文件"),
+            rx.of('event: step\ndata: 2'),
             rx.of(null).switchMap(() => {
-                const childProcess = shell.exec("go mod init " + name, { async: true })
-                return rx.merge(rx.fromEvent(childProcess.stdout, "data"), rx.fromEvent(childProcess.stderr, "data"))
-            }).map(data=>"data: "+data),
-            rx.of("step: 3"),
-            rx.of(null).switchMap(() => {
-                const childProcess = shell.exec("go build", { async: true })
-                return rx.merge(rx.fromEvent(childProcess.stdout, "data"), rx.fromEvent(childProcess.stderr, "data"))
+                const childProcess = shell.exec("go mod init " + name, { async: true, cwd: dir })
+                return rx.merge(rx.fromEvent(childProcess.stdout, "data"), rx.fromEvent(childProcess.stderr, "data")).takeUntil(rx.fromEvent(childProcess, "exit"))
             }).map(data => "data: " + data),
+            rx.of('event: step\ndata: 3'),
+            rx.of(null).switchMap(() => {
+                const childProcess = shell.exec("go build", { async: true, cwd: dir })
+                return rx.merge(rx.fromEvent(childProcess.stdout, "data"), rx.fromEvent(childProcess.stderr, "data")).takeUntil(rx.fromEvent(childProcess, "exit"))
+            }).map(data => "data: " + data),
+            rx.bindNodeCallback(fs.writeFile, fs, path.join(instancesDir, name + ".toml"), toml.stringify({ Name: name, Path: dir })).map(() => "data: success"),
         )
-        return catchError(err => rx.of("exception: " + err.toString()))(rx.concat(...steps))
+        return catchError(err => rx.of("event: exception\ndata: " + err.toString()))(rx.concat(...steps).tap(console.log))
     })
     app.use(KoaBody())
     app.use(router.routes())
