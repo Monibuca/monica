@@ -55,22 +55,25 @@ body {
     height: 6px;
     border-radius: 50%;
     box-sizing: border-box;
-    margin:5px;
+    margin: 5px;
     vertical-align: middle;
 }
 .status-green {
     border-color: #16b983;
     background-color: #88f1d4;
-    box-shadow: inset -0.6px -1.9px 4px 0px rgba(21, 139, 100, 0.8),0px 0px 8px 1px rgba(21, 139, 100, 0.7);
+    box-shadow: inset -0.6px -1.9px 4px 0px rgba(21, 139, 100, 0.8),
+        0px 0px 8px 1px rgba(21, 139, 100, 0.7);
 }
 .status-yellow {
     border-color: #9c9709;
     background-color: #ffe118;
-    box-shadow: inset -0.6px -1.9px 4px 0px rgba(139, 127, 21, 0.8),0px 0px 8px 1px rgba(139, 127, 21, 0.7);
+    box-shadow: inset -0.6px -1.9px 4px 0px rgba(139, 127, 21, 0.8),
+        0px 0px 8px 1px rgba(139, 127, 21, 0.7);
 }
 .status-red {
     border-color: #c22727;
     background-color: #f5436c;
-    box-shadow: inset -0.6px -1.9px 4px 0px rgba(139, 21, 21, 0.8),0px 0px 8px 1px rgba(139, 21, 21, 0.7);
+    box-shadow: inset -0.6px -1.9px 4px 0px rgba(139, 21, 21, 0.8),
+        0px 0px 8px 1px rgba(139, 21, 21, 0.7);
 }
 </style>

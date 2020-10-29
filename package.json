@@ -1,19 +1,30 @@
 {
-  "name": "monica",
-  "version": "0.0.0",
+  "name": "@langhuihui/monica",
+  "version": "0.0.1",
   "scripts": {
     "start": "node server/index.js",
     "dev": "vite",
     "build": "vite build"
+  },
+  "bin": {
+    "monica": "server/index.js"
+  },
+  "keywords": [
+    "monibuca",
+    "vue3"
+  ],
+  "author": "langhuihui",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https: //github.com/Monibuca/monica.git"
   },
   "dependencies": {
     "@ant-design/icons-vue": "^5.1.5",
     "ant-design-vue": "^2.0.0-beta.10",
     "fastrx": "^1.3.1",
     "vue": "^3.0.0",
-    "vue-router": "^4.0.0-beta.13"
-  },
-  "devDependencies": {
+    "vue-router": "^4.0.0-beta.13",
     "@iarna/toml": "^2.2.5",
     "@vue/compiler-sfc": "^3.0.0-rc.1",
     "find-process": "^1.4.3",
