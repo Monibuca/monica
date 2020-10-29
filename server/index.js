@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 const { createServer } = require('vite')
 const runScript = require('./runScript')
 const KoaRouter = require("koa-router")
