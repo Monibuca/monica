@@ -42,7 +42,7 @@
                     <a-textarea autosize v-model:value="config" />
                 </a-tab-pane>
                 <a-tab-pane key="5" tab="创建">
-                    <a-checkbox v-model:check="clearDir">清空目录</a-checkbox>
+                    <a-checkbox v-model:checked="clearDir">清空目录</a-checkbox>
                     <a-steps direction="vertical" :current="currentStep">
                         <a-step
                             v-for="s in steps"
@@ -50,9 +50,8 @@
                             :title="s.title"
                         >
                             <template v-slot:description>
-                            <pre>{{ s.log }}</pre>
-                        </template
-                            >
+                                <pre>{{ s.log }}</pre>
+                            </template>
                         </a-step>
                     </a-steps>
                 </a-tab-pane>
