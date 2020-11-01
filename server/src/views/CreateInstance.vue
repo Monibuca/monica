@@ -42,7 +42,6 @@
                     <a-textarea autosize v-model:value="config" />
                 </a-tab-pane>
                 <a-tab-pane key="5" tab="创建">
-                    <a-checkbox v-model:checked="clearDir">清空目录</a-checkbox>
                     <a-steps direction="vertical" :current="currentStep">
                         <a-step
                             v-for="s in steps"
@@ -63,7 +62,17 @@
                 下一步</a-button
             >
             <template v-else>
-                <a-button :loading="creating" @click="startCreate">
+                <a-checkbox v-model:checked="clearDir">清空目录</a-checkbox>
+                <a-popconfirm
+                    v-if="clearDir"
+                    title="确认清空目录?"
+                    ok-text="Yes"
+                    cancel-text="No"
+                    @confirm="startCreate"
+                >
+                    <a-button :loading="creating"> 开始创建 </a-button>
+                </a-popconfirm>
+                <a-button v-else :loading="creating" @click="startCreate">
                     开始创建
                 </a-button>
             </template>
