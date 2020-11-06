@@ -1,5 +1,4 @@
 <template>
-  <HelloWorld />
   <div class="tool-bar"><QuestionCircleOutlined /></div>
   <router-view v-slot="{ Component }">
     <transition name="fade">
@@ -10,11 +9,9 @@
 
 <script>
 import { QuestionCircleOutlined } from '@ant-design/icons-vue'
-import HelloWorld from './components/HelloWorld.vue'
 export default {
   name: 'App',
   components: {
-    HelloWorld,
     QuestionCircleOutlined
   }
 }

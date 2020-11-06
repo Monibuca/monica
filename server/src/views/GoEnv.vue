@@ -139,7 +139,7 @@ export default {
 }
 .box-card {
   transform: scaleY(0);
-  animation: cardA 0.5s ease 3s forwards;
+  animation: cardA 0.5s ease 1s forwards;
   overflow: hidden;
   width: 60%;
   margin: auto;
@@ -165,6 +165,6 @@ export default {
   overflow: hidden;
   word-break: break-all;
   border-right: 1px solid cyan;
-  animation: caret 0.5s step-end infinite, text 4s linear 3s forwards;
+  animation: caret 0.5s step-end infinite, text 4s linear 1s forwards;
 }
 </style>
