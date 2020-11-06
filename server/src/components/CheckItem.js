@@ -1,1 +1,1 @@
-export { default as CheckTag } from "./CheckTag.vue";
+export { default as CheckTag } from './CheckTag.vue'

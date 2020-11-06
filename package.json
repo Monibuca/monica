@@ -4,7 +4,8 @@
   "scripts": {
     "start": "node server/index.js",
     "dev": "vite",
-    "build": "vite build"
+    "build": "vite build",
+    "format": "prettier --write \"server/**/*.js\" \"server/**/*.vue\""
   },
   "bin": {
     "monica": "server/index.js"
@@ -34,5 +35,8 @@
     "less-loader": "^7.0.1",
     "shelljs": "^0.8.4",
     "vite": "^1.0.0-rc.8"
+  },
+  "devDependencies": {
+    "prettier": "^2.1.2"
   }
 }
