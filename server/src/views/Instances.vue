@@ -23,7 +23,9 @@
               </a-popconfirm>
             </template>
             <template v-else-if="instance.status == 'online'">
-              <DesktopOutlined />
+              <DesktopOutlined
+                @click="$router.push('/dashboard/' + instance.Name)"
+              />
               <a-popconfirm
                 title="是否重启实例进程?"
                 ok-text="Yes"
@@ -107,7 +109,7 @@
       v-model:visible="visible.update"
       @ok="visible.update = false"
     >
-      <pre v-html="updateLog"></pre>
+      <pre v-html="updateLog" style="max-height: 50vh"></pre>
     </a-modal>
   </a-layout>
 </template>
@@ -264,7 +266,7 @@ export default {
           .takeUntil(unmountedOb)
           .subscribe(
             (msg) => {
-              updateLog.value += JSON.parse(msg) + '\n'
+              updateLog.value += msg + '\n'
             },
             (e) => e.target.close(),
             () => {}

@@ -19,7 +19,7 @@
           ></a-timeline-item>
         </a-timeline>
         <a-row type="flex" justify="center">
-          <router-link v-if="!checking" to="/instances">关闭</router-link>
+          <router-link v-if="!checking" to="/instances">下一步</router-link>
         </a-row>
       </a-card>
     </a-layout-content>

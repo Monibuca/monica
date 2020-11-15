@@ -163,7 +163,10 @@ StreamPath = "live/rtsp"
 #URL = "rtsp://admin:admin@192.168.1.212:554/cam/realmonitor?channel=1&subtype=1"
 [WebRTC]
 # 公网IP地址
-PublicIP = "127.0.0.1"
+PublicIP = ["127.0.0.1"]
+# 端口范围不配置的话是自动分配
+# PortMin = 30000
+# PortMax = 40000
 [GB28181]
 Serial = "34020000002000000001"
 Realm = "3402000000"

@@ -13,16 +13,48 @@ const homedir = os.homedir()
 const instancesDir = path.join(homedir, '.monibuca')
 const instanceMap = new Map()
 const { koaEventStream } = require('fastrx/extention')
-const { rx, concat, catchError } = require('fastrx')
+const { rx, concat, catchError, map, pipe } = require('fastrx')
 const scriptExt = os.platform() == 'win32' ? 'bat' : 'sh'
-// shell.ln(
-//   '-sf',
-//   path.join(__dirname, '../node_modules'),
-//   path.join(__dirname, './node_modules')
-// )
+shell.ln(
+  '-sf',
+  path.join(__dirname, '../node_modules'),
+  path.join(__dirname, './node_modules')
+)
 process.chdir(__dirname)
 if (!fs.existsSync(instancesDir))
   fs.mkdirSync(instancesDir, { recursive: true })
+
+function getAllInstance() {
+  return fs.readdirSync(instancesDir).map(async (f) => {
+    const result = toml.parse(fs.readFileSync(path.join(instancesDir, f)))
+    result.config = toml.parse(
+      fs.readFileSync(path.join(result.Path, 'config.toml'))
+    )
+    try {
+      const g = /\d+/.exec(
+        fs.readFileSync(
+          path.join(
+            result.Path,
+            os.platform() == 'win32' ? 'shutdown.bat' : 'shutdown.sh'
+          )
+        )
+      )
+      const list = await findProcess('pid', g[0])
+      result.pid = g[0]
+      if (list.length && list[0].name.startsWith(result.Name)) {
+        result.status = 'online'
+      } else {
+        result.status = 'offline'
+      }
+    } catch (e) {
+      result.status = 'offline'
+    }
+    instanceMap.set(result.Name, result)
+    return result
+  })
+}
+
+getAllInstance()
 const myPlugin = ({
   root, // project root directory, absolute path
   app, // Koa app instance
@@ -41,34 +73,12 @@ const myPlugin = ({
   })
   router.get('/api/instance/list', async (ctx) => {
     ctx.body = await Promise.all(
-      fs.readdirSync(instancesDir).map(async (f) => {
-        const result = toml.parse(fs.readFileSync(path.join(instancesDir, f)))
-        result.config = toml.parse(
-          fs.readFileSync(path.join(result.Path, 'config.toml'))
-        )
-        try {
-          const g = /\d+/.exec(
-            fs.readFileSync(
-              path.join(
-                result.Path,
-                os.platform() == 'win32' ? 'shutdown.bat' : 'shutdown.sh'
-              )
-            )
-          )
-          const list = await findProcess('pid', g[0])
-          result.pid = g[0]
-          if (list.length && list[0].name.startsWith(result.Name)) {
-            result.status = 'online'
-          } else {
-            result.status = 'offline'
-          }
-        } catch (e) {
-          result.status = 'offline'
-        }
-        instanceMap.set(result.Name, result)
-        return result
-      })
+      getAllInstance()
     )
+  })
+  router.get("/api/instance/config", ctx => {
+    const instance = instanceMap.get(ctx.query.name)
+    ctx.body = toml.parse(fs.readFileSync(path.join(instance.Path, 'config.toml')))
   })
   router.post('/api/instance/config/modify', (ctx) => {
     const instance = instanceMap.get(ctx.query.name)
@@ -118,7 +128,7 @@ const myPlugin = ({
       sink.next(shell.exec('go build', { async: true, cwd: instance.Path }))
       sink.complete()
     }).switchMap(getDataO)
-    return concat(dataO1, dataO2)
+    return pipe(concat(dataO1, dataO2), map(x => "data: " + x))
   })
   router.get('/api/listDir', (ctx) => {
     let input = ctx.query.input
