@@ -19,16 +19,11 @@
           ></a-timeline-item>
         </a-timeline>
         <a-row type="flex" justify="center">
-          <router-link v-if="!checking" to="/instances">下一步</router-link>
+          <router-link class="btn" v-if="!checking" to="/instances">下一步</router-link>
         </a-row>
       </a-card>
+      <p class="tip">操作提示：如果你的Go环境配置都是正确的，那就点击上面的下一步，进行实例创建和管理哦</p>
     </a-layout-content>
-    <a-layout-footer>
-      <div class="load-text">
-        <InfoCircleOutlined />
-        由于需要修改系统配置，请启动时使用root身份，或者加上sudo
-      </div>
-    </a-layout-footer>
   </a-layout>
 </template>
 <script>
@@ -166,5 +161,19 @@ export default {
   word-break: break-all;
   border-right: 1px solid cyan;
   animation: caret 0.5s step-end infinite, text 4s linear 1s forwards;
+}
+.btn {
+  font-size: 30px;
+  font-weight: bold;
+}
+.tip {
+  transform: scaleY(0);
+  animation: cardA 0.5s ease 1s forwards;
+  font-size: 18px;
+  width: 60%;
+  margin: auto;
+  margin-top: 50px;
+  /* text-align: center; */
+  /* margin: auto; */
 }
 </style>

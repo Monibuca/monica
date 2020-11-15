@@ -11,16 +11,22 @@
         >
           <template class="ant-card-actions" #actions>
             <template v-if="instance.status == 'offline'">
-              <setting-outlined @click="configInstance(instance)" />
-              <CloudDownloadOutlined @click="updateInstance(instance)" />
-              <a-popconfirm
-                title="是否删除实例?"
-                ok-text="Yes"
-                cancel-text="No"
-                @confirm="removeInstance(instance)"
-              >
-                <DeleteOutlined />
-              </a-popconfirm>
+              <a-tooltip title="实例配置修改" placement="bottom">
+                <setting-outlined @click="configInstance(instance)" />
+              </a-tooltip>
+              <a-tooltip title="实例依赖更新" placement="bottom">
+                <CloudDownloadOutlined @click="updateInstance(instance)" />
+              </a-tooltip>
+              <a-tooltip title="实例删除" placement="bottom">
+                <a-popconfirm
+                  :title="`是否删除该实例？`"
+                  ok-text="Yes"
+                  cancel-text="No"
+                  @confirm="removeInstance(instance)"
+                >
+                  <DeleteOutlined />
+                </a-popconfirm>
+              </a-tooltip>
             </template>
             <template v-else-if="instance.status == 'online'">
               <DesktopOutlined
@@ -47,23 +53,26 @@
               <span v-if="instance.status == 'online'"
                 >[{{ instance.pid }}]</span
               >
-              <a-switch
-                @change="
-                  (checked) =>
-                    checked ? startInstance(instance) : killInstance(instance)
-                "
-                :loading="!instance.status"
-                :checked="instance.status == 'online'"
-                size="small"
-                style="float: right"
-              />
+              <a-tooltip title="实例启动开关" placement="top">
+                <a-switch
+                  @change="
+                    (checked) =>
+                      checked ? startInstance(instance) : killInstance(instance)
+                  "
+                  :loading="!instance.status"
+                  :checked="instance.status == 'online'"
+                  checked-children="开"
+                  size="small"
+                  style="float: right;"
+                />
+              </a-tooltip>
             </template>
           </a-card-meta>
         </a-card>
       </a-row>
     </a-layout-content>
     <a-layout-footer>
-      <a-button @click="$router.push('/create')"> 创建新实例</a-button>
+      <a-button @click="$router.push('/create')">创建新实例</a-button>
     </a-layout-footer>
     <a-modal
       :title="currentInstance.Name"

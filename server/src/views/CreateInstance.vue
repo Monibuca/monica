@@ -19,6 +19,8 @@
           <a-input v-model:value="name"></a-input>
         </a-tab-pane>
         <a-tab-pane key="3" tab="选插件">
+          <a-button type="primary" ghost style="margin-right: 20px;" @click="selectAll">选中所有插件</a-button>
+          <a-button type="primary" ghost @click="selectNone">取消所有选中</a-button>
           <a-list item-layout="horizontal" :data-source="plugins">
             <template v-slot:renderItem="{ item, index }">
               <a-list-item>
@@ -56,10 +58,12 @@
         下一步</a-button
       >
       <template v-else>
-        <a-checkbox v-model:checked="clearDir">清空目录</a-checkbox>
+        <a-tooltip title="会将创建实例所在的目录全部清空" placement="top">
+          <a-checkbox v-model:checked="clearDir">清空目录</a-checkbox>
+        </a-tooltip>
         <a-popconfirm
           v-if="clearDir"
-          title="确认清空目录?"
+          :title="`确认清空${path}目录?`"
           ok-text="Yes"
           cancel-text="No"
           @confirm="startCreate"
@@ -69,9 +73,10 @@
         <a-button v-else :loading="creating" @click="startCreate">
           开始创建
         </a-button>
+        <a-button style="margin-left: 20px;" @click="$router.push('/instances')">进入实例列表页面</a-button>
       </template>
       <a-button type="link" style="float: right" @click="$router.go(-1)">
-        <template v-slot:icon><ExportOutlined /></template> 退出
+        <template v-slot:icon><ExportOutlined /></template> 退出创建
       </a-button>
     </a-layout-footer>
   </a-layout>
@@ -244,6 +249,12 @@ ListenAddr = "192.168.1.120:5060"`)
         eventSource.addEventListener('step', (evt) => {
           currentStep.value = evt.data | 0
         })
+      },
+      selectNone() {
+        plugins.value.forEach( item => item.selected = false)
+      },
+      selectAll() {
+        plugins.value.forEach( item => item.selected = true)
       }
     }
   }
