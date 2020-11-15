@@ -59,9 +59,8 @@
                     (checked) =>
                       checked ? startInstance(instance) : killInstance(instance)
                   "
-                  :loading="!instance.status"
+                  :loading="false"
                   :checked="instance.status == 'online'"
-                  checked-children="开"
                   size="small"
                   style="float: right;"
                 />
@@ -138,6 +137,7 @@ import {
   DesktopOutlined,
   CloudDownloadOutlined
 } from '@ant-design/icons-vue'
+import { notification } from 'ant-design-vue';
 export default {
   components: {
     SettingOutlined,
@@ -169,36 +169,6 @@ export default {
       .subscribe((x) => {
         instances.value = x
       })
-    // fetch("/api/instance/list")
-    //     .then((response) => response.json())
-    //     .then((x) => {
-    //         instances.push(...x);
-    //         // x.forEach((x) => {
-    //         //     if (x.config.GateWay) {
-    //         //         let port = x.config.GateWay.ListenAddr;
-    //         //         if (port[0] != ":") {
-    //         //             port = port.substr(port.indexOf(":"));
-    //         //         }
-    //         //         const es = new EventSource(
-    //         //             "http://" +
-    //         //                 window.location.hostname +
-    //         //                 port +
-    //         //                 "/api/summary"
-    //         //         );
-    //         //         es.onmessage = (msg) => {
-    //         //             const data = JSON.parse(msg.data)
-    //         //             x.status = "online";
-    //         //         };
-    //         //         es.onerror = (err) => {
-    //         //             x.status = "offline";
-    //         //             es.close();
-    //         //         };
-    //         //         es.onopen = () => {
-    //         //             onUnmounted(() => es.close());
-    //         //         };
-    //         //     }
-    //         // });
-    //     });
     const visible = reactive({
       config: false,
       update: false,
@@ -253,7 +223,23 @@ export default {
         instance.status = ''
         fetch('/api/instance/start?name=' + instance.Name, {
           method: 'POST'
-        }).then(commonRes('已启动实例'))
+        }).then(response => {
+          return response.json()
+        }).then(data => {
+          // code 是 1 代表失败
+          if (data.code == 1) {
+            notification['error']({
+              message: '创建实例失败',
+              description: '失败提示：' + data.msg,
+              onClick: () => {
+                console.log('Notification Clicked!');
+              },
+              // 加一行文字
+              btn: '解决方案：权限不足，需要你采用 root 身份重新启动 monica，然后再次尝试'
+            });
+          }
+          else commonRes('成功启动实例')
+        })
       },
       restartInstance(instance) {
         instance.status = ''

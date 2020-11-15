@@ -54,7 +54,35 @@ function getAllInstance() {
   })
 }
 
+/**
+ * 获取实例最新的log日志
+ * @param {*} instancesDir 实例目录
+ */
+async function readLastLog(instancesDir) {
+  const logPath = path.join(instancesDir, 'logs')
+  const re = fs.readdirSync(logPath)
+  let len = re.length
+  const lastLog = re[len - 1]
+  const text = fs.readFileSync(
+    path.join(
+      logPath,
+      lastLog
+    ),
+    'utf-8'
+  )
+  const index = text.indexOf('permission denied')
+  if (index > -1) return {
+    msg: text,
+    code: 1
+  }
+  else return {
+    msg: '创建实例成功',
+    code: 0
+  }
+}
+
 getAllInstance()
+
 const myPlugin = ({
   root, // project root directory, absolute path
   app, // Koa app instance
@@ -98,10 +126,10 @@ const myPlugin = ({
     runScript('shutdown', { cwd: instance.Path })
     ctx.body = ''
   })
-  router.post('/api/instance/start', (ctx) => {
+  router.post('/api/instance/start', async (ctx) => {
     const instance = instanceMap.get(ctx.query.name)
     runScript('restart', { cwd: instance.Path })
-    ctx.body = ''
+    ctx.body = await readLastLog(instance.Path)
   })
   router.delete('/api/instance/remove', (ctx) => {
     const instance = instanceMap.get(ctx.query.name)
