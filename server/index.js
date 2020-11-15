@@ -31,7 +31,7 @@ function getAllInstance() {
       fs.readFileSync(path.join(result.Path, 'config.toml'))
     )
     try {
-      const g = /\d+/.exec(
+      const g = /\d+$/.exec(
         fs.readFileSync(
           path.join(
             result.Path,
