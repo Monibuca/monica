@@ -31,14 +31,20 @@ function getAllInstance() {
       fs.readFileSync(path.join(result.Path, 'config.toml'))
     )
     try {
-      const g = /\d+$/.exec(
+      const g = os.platform() == 'win32' ? /\d+/.exec(
         fs.readFileSync(
           path.join(
             result.Path,
-            os.platform() == 'win32' ? 'shutdown.bat' : 'shutdown.sh'
+            'shutdown.bat'
           )
         )
-      )
+      ) : /\d+$/.exec(
+        fs.readFileSync(
+          path.join(
+            result.Path,
+            'shutdown.sh'
+          )
+        ))
       const list = await findProcess('pid', g[0])
       result.pid = g[0]
       if (list.length && list[0].name.startsWith(result.Name)) {
@@ -294,3 +300,4 @@ createServer({
   },
   configureServer: [myPlugin]
 }).listen(3000)
+console.log("server start at port:3000")
