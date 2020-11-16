@@ -29,16 +29,20 @@
               </a-tooltip>
             </template>
             <template v-else-if="instance.status == 'online'">
-              <DesktopOutlined
-                @click="$router.push('/dashboard/' + instance.Name)"
-              />
+              <a-tooltip title="实例操作面板" placement="bottom">
+                <DesktopOutlined
+                  @click="$router.push('/dashboard/' + instance.Name)"
+                />
+              </a-tooltip>
               <a-popconfirm
                 title="是否重启实例进程?"
                 ok-text="Yes"
                 cancel-text="No"
                 @confirm="restartInstance(instance)"
               >
-                <ReloadOutlined />
+                <a-tooltip title="重启实例" placement="bottom">
+                  <ReloadOutlined />
+                </a-tooltip>
               </a-popconfirm>
             </template>
           </template>
