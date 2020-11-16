@@ -183,6 +183,31 @@ export default {
       }
     }
     const updateLog = ref('')
+    function startInstance(instance) {
+      instance.status = ''
+      fetch('/api/instance/start?name=' + instance.Name, {
+        method: 'POST'
+      }).then(response => {
+        return response.json()
+      }).then(data => {
+        // code 是 1 代表失败
+        if (data.code != 0) {
+          let text = ''
+          if (data.code == 1) text = '解决方案：权限不足，需要你采用 root 身份重新启动 monica，然后再次尝试'
+          if (data.code == 2) text = '解决方案：该实例某些插件端口和其他正在运行实例插件端口有冲突，需要你进行端口调整，避免启动的插件有端口重复'
+          notification['error']({
+            message: '创建实例失败',
+            description: '失败提示：' + data.msg,
+            onClick: () => {
+              console.log('Notification Clicked!');
+            },
+            // 加一行文字
+            btn: text
+          });
+        }
+        else $message.success(data.msg)
+      })
+    }
     const result = {
       updateLog,
       confirmLoading,
@@ -227,7 +252,10 @@ export default {
           return response.json()
         }).then(data => {
           // code 是 1 代表失败
-          if (data.code == 1) {
+          if (data.code != 0) {
+            let text = ''
+            if (data.code == 1) text = '解决方案：权限不足，需要你采用 root 身份重新启动 monica，然后再次尝试'
+            if (data.code == 2) text = '解决方案：该实例某些插件端口和其他正在运行实例插件端口有冲突，需要你进行端口调整，避免启动的插件有端口重复'
             notification['error']({
               message: '创建实例失败',
               description: '失败提示：' + data.msg,
@@ -235,17 +263,35 @@ export default {
                 console.log('Notification Clicked!');
               },
               // 加一行文字
-              btn: '解决方案：权限不足，需要你采用 root 身份重新启动 monica，然后再次尝试'
+              btn: text
             });
           }
-          else commonRes('成功启动实例')
+          else $message.success(data.msg)
         })
       },
       restartInstance(instance) {
         instance.status = ''
-        fetch('/api/instance/restart?name=' + instance.Name, {
+        fetch('/api/instance/start?name=' + instance.Name, {
           method: 'POST'
-        }).then(commonRes('已重启实例'))
+        }).then(response => {
+          return response.json()
+        }).then(data => {
+          // code 是 1 代表失败
+          if (data.code != 0) {
+            let text = ''
+            if (data.code == 1) text = '解决方案：权限不足，需要你采用 root 身份重新启动 monica，然后再次尝试'
+            if (data.code == 2) text = '解决方案：该实例某些插件端口和其他正在运行实例插件端口有冲突，需要你进行端口调整，避免启动的插件有端口重复'
+            notification['error']({
+              message: '创建实例失败',
+              description: '失败提示：' + data.msg,
+              onClick: () => {
+                console.log('Notification Clicked!');
+              },
+              btn: text
+            });
+          }
+          else $message.success('已重启实例')
+        })
       },
       removeInstance(instance) {
         instance.status = ''

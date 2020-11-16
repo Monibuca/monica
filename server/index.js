@@ -60,25 +60,36 @@ function getAllInstance() {
  */
 async function readLastLog(instancesDir) {
   const logPath = path.join(instancesDir, 'logs')
-  const re = fs.readdirSync(logPath)
-  let len = re.length
-  const lastLog = re[len - 1]
-  const text = fs.readFileSync(
-    path.join(
-      logPath,
-      lastLog
-    ),
-    'utf-8'
-  )
-  const index = text.indexOf('permission denied')
-  if (index > -1) return {
-    msg: text,
-    code: 1
-  }
-  else return {
-    msg: '创建实例成功',
-    code: 0
-  }
+  if (fs.existsSync(logPath)) {
+    const re = fs.readdirSync(logPath)
+    let len = re.length
+    const lastLog = re[len - 1]
+    const text = fs.readFileSync(path.join(logPath, lastLog), 'utf-8')
+    const index = text.indexOf('permission denied')
+    const index2 = text.indexOf('already in use')
+    if (index > -1)
+      return {
+        msg: text,
+        // 权限不足
+        code: 1
+      }
+    if (index2 > -1)
+      return {
+        msg: text,
+        // 实例端口被占用
+        code: 2
+      }
+    else
+      return {
+        msg: '创建实例成功',
+        // 创建成功
+        code: 0
+      }
+  } else
+    return {
+      msg: '创建实例成功',
+      code: 0
+    }
 }
 
 getAllInstance()

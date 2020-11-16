@@ -238,7 +238,7 @@ ListenAddr = "192.168.1.120:5060"`)
           if (evt.data == 'success') {
             creating.value = false
             eventSource.close()
-            $message.success('创建完成')
+            $message.success('创建完成点击下方进入实例列表页面按钮，去实例管理页面启动实例哦')
           }
         }
         eventSource.addEventListener('exception', (evt) => {
