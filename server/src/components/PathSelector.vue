@@ -5,6 +5,7 @@
     :dataSource="candidate"
     allowClear
     @change="onInput"
+    @focus="focus"
     open
   />
 </template>
@@ -14,16 +15,7 @@ import { getCurrentInstance, ref } from 'vue'
 export default {
   name: 'PathSelector',
   setup(props, { emit }) {
-    const {
-      ctx: { $message },
-      refs
-    } = getCurrentInstance()
     const candidate = ref([])
-    const dir = () => {
-      let paths = props.value.split('/')
-      paths.pop()
-      return paths.join('/')
-    }
     let lastInput = ''
     let searching = false
     const search = (v) => {
@@ -32,6 +24,7 @@ export default {
         .then((x) => x.json())
         .then((x) => {
           if (lastInput != v) {
+            lastInput = v
             search(lastInput)
           } else {
             searching = false
@@ -44,14 +37,12 @@ export default {
     }
     return {
       candidate,
-      // onSelectCand(name) {
-      //     lastInput = dir()+"/"+name+"/"
-      //     emit('input',lastInput)
-      //     //search(lastInput)
-      // },
       onInput(value) {
         lastInput = value
         if (!searching) search(lastInput)
+      },
+      focus(ctx) {
+        search(ctx.target.value)
       }
     }
   }
