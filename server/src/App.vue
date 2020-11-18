@@ -1,6 +1,19 @@
 <template>
   <HelloWorld />
-  <div class="tool-bar"><QuestionCircleOutlined /></div>
+  <div class="tool-bar">
+    <a-tag color="#55acee">
+      <GithubOutlined />
+      Github
+    </a-tag>
+    <a-tag color="#55acee">
+      <HomeOutlined />
+      官方网站
+    </a-tag>
+    <a-tag color="#55acee">
+      <WechatOutlined />
+      微信联系
+    </a-tag>
+  </div>
   <router-view v-slot="{ Component }">
     <transition name="fade">
       <component :is="Component" />
@@ -9,13 +22,15 @@
 </template>
 
 <script>
-import { QuestionCircleOutlined } from '@ant-design/icons-vue'
+import { GithubOutlined, WechatOutlined, HomeOutlined } from '@ant-design/icons-vue'
 import HelloWorld from './components/HelloWorld.vue'
 export default {
   name: 'App',
   components: {
     HelloWorld,
-    QuestionCircleOutlined
+    GithubOutlined,
+    WechatOutlined,
+    HomeOutlined
   }
 }
 </script>
