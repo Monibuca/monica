@@ -1,7 +1,7 @@
 <template>
   <a-layout>
     <a-layout-header></a-layout-header>
-    <a-layout-content>
+    <a-layout-content v-if="instances.length">
       <a-row type="flex">
         <a-card
           hoverable
@@ -74,7 +74,10 @@
         </a-card>
       </a-row>
     </a-layout-content>
-    <a-layout-footer>
+    <a-empty v-else style="marginTop: 20vh; font-size: 20px" description="你还没有实例哦，快点击下面按钮，去创建实例吧！">
+      <a-button size="large" style="marginTop: 30px; font-size: 20px" @click="$router.push('/create')">创建新实例</a-button>
+    </a-empty>
+    <a-layout-footer v-if="instances.length">
       <a-button @click="$router.push('/create')">创建新实例</a-button>
     </a-layout-footer>
     <a-modal
