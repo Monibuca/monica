@@ -1,5 +1,5 @@
 <template>
-  <a-layout>
+  <a-layout v-if="pageInit">
     <a-layout-header></a-layout-header>
     <a-layout-content v-if="instances.length">
       <a-row type="flex">
@@ -74,7 +74,7 @@
         </a-card>
       </a-row>
     </a-layout-content>
-    <a-empty v-else style="marginTop: 20vh; font-size: 20px" description="你还没有实例哦，快点击下面按钮，去创建实例吧！">
+    <a-empty v-if="instances.length == 0" style="marginTop: 20vh; font-size: 20px" description="你还没有实例哦，快点击下面按钮，去创建实例吧！">
       <a-button size="large" style="marginTop: 30px; font-size: 20px" @click="$router.push('/create')">创建新实例</a-button>
     </a-empty>
     <a-layout-footer v-if="instances.length">
@@ -166,6 +166,8 @@ export default {
   },
   setup() {
     const instances = ref([])
+    // 页面初始化
+    const pageInit = ref(false)
 
     const unmountedOb = rx.fromLifeHook(onUnmounted)
     const {
@@ -182,6 +184,7 @@ export default {
       .takeUntil(unmountedOb)
       .subscribe((x) => {
         instances.value = x
+        pageInit.value = true
       })
     const visible = reactive({
       config: false,
@@ -233,6 +236,7 @@ export default {
       currentInstance: {},
       instances,
       visible,
+      pageInit,
       configInstance(instance) {
         result.currentInstance = instance
         visible.config = true
