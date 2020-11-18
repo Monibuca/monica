@@ -66,7 +66,7 @@
                   :loading="false"
                   :checked="instance.status == 'online'"
                   size="small"
-                  style="float: right;"
+                  style="float: right"
                 />
               </a-tooltip>
             </template>
@@ -111,6 +111,13 @@
                 v-else-if="typeof v == 'boolean'"
                 v-model:checked="plugin[k]"
               />
+              <template v-else-if="Array.isArray(v)">
+                <div>{{ JSON.stringify(v) }}</div>
+                <a-input v-for="(v1, index) in v" :key="k + index">
+                  v-model:value="v[index]"
+                </a-input>
+                <a-button type="link" @click="v.push('')">+</a-button>
+              </template>
             </a-form-item>
           </a-form>
         </a-tab-pane>
@@ -141,7 +148,7 @@ import {
   DesktopOutlined,
   CloudDownloadOutlined
 } from '@ant-design/icons-vue'
-import { notification } from 'ant-design-vue';
+import { notification } from 'ant-design-vue'
 export default {
   components: {
     SettingOutlined,
@@ -191,26 +198,31 @@ export default {
       instance.status = ''
       fetch('/api/instance/start?name=' + instance.Name, {
         method: 'POST'
-      }).then(response => {
-        return response.json()
-      }).then(data => {
-        // code 是 1 代表失败
-        if (data.code != 0) {
-          let text = ''
-          if (data.code == 1) text = '解决方案：权限不足，需要你采用 root 身份重新启动 monica，然后再次尝试'
-          if (data.code == 2) text = '解决方案：该实例某些插件端口和其他正在运行实例插件端口有冲突，需要你进行端口调整，避免启动的插件有端口重复'
-          notification['error']({
-            message: '创建实例失败',
-            description: '失败提示：' + data.msg,
-            onClick: () => {
-              console.log('Notification Clicked!');
-            },
-            // 加一行文字
-            btn: text
-          });
-        }
-        else $message.success(data.msg)
       })
+        .then((response) => {
+          return response.json()
+        })
+        .then((data) => {
+          // code 是 1 代表失败
+          if (data.code != 0) {
+            let text = ''
+            if (data.code == 1)
+              text =
+                '解决方案：权限不足，需要你采用 root 身份重新启动 monica，然后再次尝试'
+            if (data.code == 2)
+              text =
+                '解决方案：该实例某些插件端口和其他正在运行实例插件端口有冲突，需要你进行端口调整，避免启动的插件有端口重复'
+            notification['error']({
+              message: '创建实例失败',
+              description: '失败提示：' + data.msg,
+              onClick: () => {
+                console.log('Notification Clicked!')
+              },
+              // 加一行文字
+              btn: text
+            })
+          } else $message.success(data.msg)
+        })
     }
     const result = {
       updateLog,
@@ -252,50 +264,60 @@ export default {
         instance.status = ''
         fetch('/api/instance/start?name=' + instance.Name, {
           method: 'POST'
-        }).then(response => {
-          return response.json()
-        }).then(data => {
-          // code 是 1 代表失败
-          if (data.code != 0) {
-            let text = ''
-            if (data.code == 1) text = '解决方案：权限不足，需要你采用 root 身份重新启动 monica，然后再次尝试'
-            if (data.code == 2) text = '解决方案：该实例某些插件端口和其他正在运行实例插件端口有冲突，需要你进行端口调整，避免启动的插件有端口重复'
-            notification['error']({
-              message: '创建实例失败',
-              description: '失败提示：' + data.msg,
-              onClick: () => {
-                console.log('Notification Clicked!');
-              },
-              // 加一行文字
-              btn: text
-            });
-          }
-          else $message.success(data.msg)
         })
+          .then((response) => {
+            return response.json()
+          })
+          .then((data) => {
+            // code 是 1 代表失败
+            if (data.code != 0) {
+              let text = ''
+              if (data.code == 1)
+                text =
+                  '解决方案：权限不足，需要你采用 root 身份重新启动 monica，然后再次尝试'
+              if (data.code == 2)
+                text =
+                  '解决方案：该实例某些插件端口和其他正在运行实例插件端口有冲突，需要你进行端口调整，避免启动的插件有端口重复'
+              notification['error']({
+                message: '创建实例失败',
+                description: '失败提示：' + data.msg,
+                onClick: () => {
+                  console.log('Notification Clicked!')
+                },
+                // 加一行文字
+                btn: text
+              })
+            } else $message.success(data.msg)
+          })
       },
       restartInstance(instance) {
         instance.status = ''
         fetch('/api/instance/start?name=' + instance.Name, {
           method: 'POST'
-        }).then(response => {
-          return response.json()
-        }).then(data => {
-          // code 是 1 代表失败
-          if (data.code != 0) {
-            let text = ''
-            if (data.code == 1) text = '解决方案：权限不足，需要你采用 root 身份重新启动 monica，然后再次尝试'
-            if (data.code == 2) text = '解决方案：该实例某些插件端口和其他正在运行实例插件端口有冲突，需要你进行端口调整，避免启动的插件有端口重复'
-            notification['error']({
-              message: '创建实例失败',
-              description: '失败提示：' + data.msg,
-              onClick: () => {
-                console.log('Notification Clicked!');
-              },
-              btn: text
-            });
-          }
-          else $message.success('已重启实例')
         })
+          .then((response) => {
+            return response.json()
+          })
+          .then((data) => {
+            // code 是 1 代表失败
+            if (data.code != 0) {
+              let text = ''
+              if (data.code == 1)
+                text =
+                  '解决方案：权限不足，需要你采用 root 身份重新启动 monica，然后再次尝试'
+              if (data.code == 2)
+                text =
+                  '解决方案：该实例某些插件端口和其他正在运行实例插件端口有冲突，需要你进行端口调整，避免启动的插件有端口重复'
+              notification['error']({
+                message: '创建实例失败',
+                description: '失败提示：' + data.msg,
+                onClick: () => {
+                  console.log('Notification Clicked!')
+                },
+                btn: text
+              })
+            } else $message.success('已重启实例')
+          })
       },
       removeInstance(instance) {
         instance.status = ''

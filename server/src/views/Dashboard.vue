@@ -12,6 +12,10 @@
               </a-tag>
             </span>
           </template>
+          <template #operator="item">
+            <a-button type="link" @click="preview(item)">预览</a-button>
+            <a-button type="link" @click="stop(item)">中止</a-button>
+          </template>
         </a-table>
       </template>
       <template v-else>
@@ -63,30 +67,7 @@
             rtsp://{{ urls.rtsp }}/{{ streamPath }}
           </a-descriptions-item>
         </a-descriptions>
-        <!-- <a-descriptions>
-          <template #title>
-            播放地址
-            <a-tooltip
-              placement="right"
-              title="可使用ffplay、vlc、flv.js等播放器从Monibuca拉流播放"
-            >
-              <QuestionCircleOutlined
-                style="line-height: 32px; margin-left: 10px"
-            /></a-tooltip>
-          </template>
-          <a-descriptions-item label="rtmp协议播放地址">
-            rtmp://{{ urls.rtmp }}/{{ streamPath }}
-          </a-descriptions-item>
-          <a-descriptions-item label="hls协议播放地址">
-            http://{{ urls.gateway }}/hls/{{ streamPath }}.m3u8
-          </a-descriptions-item>
-          <a-descriptions-item label="http-flv协议播放地址">
-            http://{{ urls.hdl }}/hls/{{ streamPath }}.flv
-          </a-descriptions-item>
-          <a-descriptions-item label="ws-flv协议播放地址">
-            ws://{{ urls.jessica }}/{{ streamPath }}.flv
-          </a-descriptions-item>
-        </a-descriptions> -->
+
         <a-descriptions
           ><template #title>
             拉流转发
@@ -142,18 +123,87 @@
       </a-button>
     </a-layout-footer>
   </a-layout>
+  <a-modal :title="currentStream.StreamPath" v-model:visible="showPreview">
+    <a-descriptions>
+      <template #title>
+        播放地址
+        <a-tooltip
+          placement="right"
+          title="可使用ffplay、vlc、flv.js等播放器从Monibuca拉流播放"
+        >
+          <QuestionCircleOutlined style="line-height: 32px; margin-left: 10px"
+        /></a-tooltip>
+      </template>
+    </a-descriptions>
+    <ul>
+      <li>rtmp://{{ urls.rtmp }}/{{ currentStream.StreamPath }}</li>
+      <li>http://{{ urls.gateway }}/hls/{{ currentStream.StreamPath }}.m3u8</li>
+      <li>http://{{ urls.hdl }}/hls/{{ currentStream.StreamPath }}.flv</li>
+      <li>ws://{{ urls.jessica }}/{{ currentStream.StreamPath }}.flv</li>
+    </ul>
+    <template #footer>
+      <a-popover
+        v-model:visible="visibles.webrtc"
+        title="WebRTC"
+        trigger="click"
+      >
+        <template #content>
+          <WebRTC
+            :visible="visibles.webrtc"
+            :url="`http://${urls.gateway}/webrtc/play?streamPath=${currentStream.StreamPath}`"
+          />
+        </template>
+        <a-button>WebRTC</a-button>
+      </a-popover>
+      <a-popover
+        v-model:visible="visibles.flvjs"
+        title="flv.js"
+        trigger="click"
+      >
+        <template #content>
+          <FlvJS
+            :visible="visibles.flvjs"
+            :url="`ws://${urls.jessica}/${currentStream.StreamPath}.flv`"
+          />
+        </template>
+        <a-button>Flv.js</a-button>
+      </a-popover>
+      <a-popover
+        v-model:visible="visibles.jessibuca"
+        title="Jessibuca"
+        trigger="click"
+      >
+        <template #content>
+          <Jessibuca
+            :visible="visibles.jessibuca"
+            :url="`ws://${urls.jessica}/${currentStream.StreamPath}`"
+          />
+        </template>
+        <a-button>Jessibuca</a-button>
+      </a-popover>
+    </template>
+  </a-modal>
 </template>
 <script>
 import { QuestionCircleOutlined, ExportOutlined } from '@ant-design/icons-vue'
 import { reactive, ref, computed, onUnmounted, getCurrentInstance } from 'vue'
+import FlvJS from '../components/FlvJs.vue'
+import Jessibuca from '../components/Jessibuca.vue'
+import WebRTC from '../components/WebRTC.vue'
 import fastrx from 'fastrx'
+
 const rx = fastrx.rx
 
 export default {
-  components: { QuestionCircleOutlined, ExportOutlined },
+  components: {
+    QuestionCircleOutlined,
+    ExportOutlined,
+    FlvJS,
+    Jessibuca,
+    WebRTC
+  },
   setup() {
     const unmountedOb = rx.fromLifeHook(onUnmounted)
-    console.log(getCurrentInstance())
     const {
       ctx: {
         $message,
@@ -166,6 +216,8 @@ export default {
         }
       }
     } = getCurrentInstance()
+    const showPreview = ref(false)
+    const currentStream = reactive({})
     const data = ref([])
     const config = ref({})
     const urls = reactive({})
@@ -225,8 +277,20 @@ export default {
       urls,
       streamPath1,
       streamPath2,
+      currentStream,
+      showPreview,
+      visibles: reactive({ webrtc: false, flvjs: false, jessibuca: false }),
       gotoGateway() {
         location.href = '//' + urls.gateway
+      },
+      stop(item) {
+        fetch(
+          '//' + urls.gateway + '/api/stop?stream=' + item.record.StreamPath
+        )
+      },
+      preview(item) {
+        showPreview.value = true
+        currentStream.StreamPath = item.record.StreamPath
       },
       streamPath: computed(() => streamPath1.value + '/' + streamPath2.value),
       pullRequest,
@@ -241,6 +305,12 @@ export default {
           key: 'StreamPath',
           title: 'StreamPath',
           dataIndex: 'StreamPath'
+        },
+        {
+          key: 'Operator',
+          title: '操作',
+          dataIndex: 'Operator',
+          slots: { customRender: 'operator' }
         }
       ]
     }
