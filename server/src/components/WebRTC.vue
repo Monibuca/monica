@@ -10,6 +10,7 @@
 </template>
 <script>
 import { onMounted, watchEffect, ref } from 'vue'
+import { message } from 'ant-design-vue'
 export default {
   props: ['url', 'visible'],
   setup(props) {
@@ -24,7 +25,7 @@ export default {
           //console.log(e);
         }
         pc.oniceconnectionstatechange = (e) => {
-          $message(pc.iceConnectionState)
+          message.info(pc.iceConnectionState)
         }
         pc.onicecandidate = (event) => {
           console.log(event)
@@ -34,15 +35,14 @@ export default {
         }
         await pc.setLocalDescription(await pc.createOffer())
         const res = await fetch(props.url, {
-          type: 'POST',
+          method: 'POST',
           body: JSON.stringify(pc.localDescription.toJSON())
         })
         if (res.ok) {
-          const errmsg = await res.json()
-          if (errmsg) $message.error(errmsg)
-          return
+          const result = await res.json()
+          if (result.errmsg) message.error(result.errmsg)
+          else return pc.setRemoteDescription(new RTCSessionDescription(result))
         }
-        await pc.setRemoteDescription(new RTCSessionDescription(result))
       }
       play(pc)
       watchEffect(() => {

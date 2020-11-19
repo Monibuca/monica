@@ -142,6 +142,16 @@
       <li>ws://{{ urls.jessica }}/{{ currentStream.StreamPath }}.flv</li>
     </ul>
     <template #footer>
+      H5预览：
+      <a-popover v-model:visible="visibles.hls" title="HLS" trigger="click">
+        <template #content>
+          <HLS
+            :visible="visibles.hls"
+            :url="`http://${urls.gateway}/hls/${currentStream.StreamPath}.m3u8`"
+          />
+        </template>
+        <a-button>HLS</a-button>
+      </a-popover>
       <a-popover
         v-model:visible="visibles.webrtc"
         title="WebRTC"
@@ -190,6 +200,7 @@ import { reactive, ref, computed, onUnmounted, getCurrentInstance } from 'vue'
 import FlvJS from '../components/FlvJs.vue'
 import Jessibuca from '../components/Jessibuca.vue'
 import WebRTC from '../components/WebRTC.vue'
+import HLS from '../components/HLS.vue'
 import fastrx from 'fastrx'
 
 const rx = fastrx.rx
@@ -200,7 +211,8 @@ export default {
     ExportOutlined,
     FlvJS,
     Jessibuca,
-    WebRTC
+    WebRTC,
+    HLS
   },
   setup() {
     const unmountedOb = rx.fromLifeHook(onUnmounted)
