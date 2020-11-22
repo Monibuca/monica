@@ -21,16 +21,25 @@ export default {
         hls.on(Hls.Events.MANIFEST_PARSED, function () {
           video.play()
         })
+        console.log(hls)
       }
 
       watchEffect(() => {
         if (!props.visible) {
           video.pause()
+          hls.detachMedia(video)
+          hls.stopLoad()
+          hls.destroy()
         } else {
           if (video.canPlayType('application/vnd.apple.mpegurl')) {
             video.src = props.url
           } else {
+            hls = new Hls()
             hls.loadSource(props.url)
+            hls.attachMedia(video)
+            hls.on(Hls.Events.MANIFEST_PARSED, function () {
+              video.play()
+            })
           }
         }
       })

@@ -150,7 +150,7 @@
             :url="`http://${urls.gateway}/hls/${currentStream.StreamPath}.m3u8`"
           />
         </template>
-        <a-button>HLS</a-button>
+        <a-button>HLS.js</a-button>
       </a-popover>
       <a-popover
         v-model:visible="visibles.webrtc"
