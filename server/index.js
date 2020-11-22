@@ -24,6 +24,14 @@ process.chdir(__dirname)
 if (!fs.existsSync(instancesDir))
   fs.mkdirSync(instancesDir, { recursive: true })
 
+async function delay(time) {
+  return new Promise(function(resolve, reject) {
+    setTimeout(function(){
+      resolve();
+    }, time);
+  });
+};
+
 function getAllInstance() {
   return fs.readdirSync(instancesDir).map(async (f) => {
     const result = toml.parse(fs.readFileSync(path.join(instancesDir, f)))
@@ -65,35 +73,27 @@ function getAllInstance() {
  * @param {*} instancesDir 实例目录
  */
 async function readLastLog(instancesDir) {
-  const logPath = path.join(instancesDir, 'logs')
-  if (fs.existsSync(logPath)) {
-    const re = fs.readdirSync(logPath)
-    let len = re.length
-    const lastLog = re[len - 1]
-    const text = fs.readFileSync(path.join(logPath, lastLog), 'utf-8')
-    const index = text.indexOf('permission denied')
-    const index2 = text.indexOf('already in use')
-    if (index > -1)
-      return {
-        msg: text,
-        // 权限不足
-        code: 1
-      }
-    if (index2 > -1)
-      return {
-        msg: text,
-        // 实例端口被占用
-        code: 2
-      }
-    else
-      return {
-        msg: '创建实例成功',
-        // 创建成功
-        code: 0
-      }
-  } else
+  await delay(200)
+  const logPath = path.join(instancesDir, 'debug.log')
+  const text = fs.readFileSync((logPath), 'utf-8')
+  const index = text.indexOf('permission denied')
+  const index2 = text.indexOf('already in use')
+  if (index > -1)
     return {
-      msg: '创建实例成功',
+      msg: text,
+      // 权限不足
+      code: 1
+    }
+  if (index2 > -1)
+    return {
+      msg: text,
+      // 实例端口被占用
+      code: 2
+    }
+  else
+    return {
+      msg: text,
+      // 创建成功
       code: 0
     }
 }
