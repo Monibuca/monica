@@ -22,7 +22,14 @@
           <router-link class="btn" v-if="!checking" to="/instances">下一步</router-link>
         </a-row>
       </a-card>
-      <p class="tip">操作提示：如果你的Go环境配置都是正确的，那就点击上面的下一步，进行实例创建和管理哦</p>
+      <p class="tip">
+        操作提示： <br>
+        1、如果你的Go环境配置都是正确的，那就点击上面的下一步，进行实例创建和管理哦 <br/>
+        2、启动 monica 命令 一定要以管理员的身份启动，不然创建实例会失败。管理员启动教学如下：<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;window电脑: 自行搜索<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mac电脑: https://www.jianshu.com/p/f5e09261a064 <br/>
+        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;按照上面链接教程设置好后 终端执行 su root 然后再执行 monica 命令 启动实例管理器<br/>
+      </p>
     </a-layout-content>
   </a-layout>
 </template>

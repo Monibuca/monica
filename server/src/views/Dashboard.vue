@@ -293,7 +293,8 @@ export default {
       showPreview,
       visibles: reactive({ webrtc: false, flvjs: false, jessibuca: false }),
       gotoGateway() {
-        location.href = '//' + urls.gateway
+        const tempwindow = window.open('_blank')
+        tempwindow.location= '//' + urls.gateway
       },
       stop(item) {
         fetch(

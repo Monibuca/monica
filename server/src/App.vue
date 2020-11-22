@@ -1,17 +1,13 @@
 <template>
   <HelloWorld />
   <div class="tool-bar">
-    <a-tag color="#55acee">
-      <GithubOutlined />
-      Github
-    </a-tag>
-    <a-tag color="#55acee">
+    <a-tag color="#55acee" @click="jump('https://monibuca.com/')">
       <HomeOutlined />
       官方网站
     </a-tag>
-    <a-tag color="#55acee">
-      <WechatOutlined />
-      微信联系
+    <a-tag color="#55acee" @click="jump('https://github.com/Monibuca')">
+      <GithubOutlined />
+      Github
     </a-tag>
   </div>
   <router-view v-slot="{ Component }">
@@ -31,6 +27,14 @@ export default {
     GithubOutlined,
     WechatOutlined,
     HomeOutlined
+  },
+  setup() {
+    return {
+      jump(url) {
+        const tempwindow = window.open('_blank')
+        tempwindow.location= url
+      }
+    }
   }
 }
 </script>
