@@ -15,8 +15,6 @@ const router = createRouter({
     { path: '/dashboard/:name', component: Dashboard }
   ]
 })
-import fastrx from 'fastrx'
-fastrx.rx.fetch = (input, opt) => fastrx.rx.fromPromise(fetch(input, opt))
 const app = createApp(App)
 app.use(router)
 app.use(Antd)

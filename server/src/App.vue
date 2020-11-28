@@ -18,7 +18,11 @@
 </template>
 
 <script>
-import { GithubOutlined, WechatOutlined, HomeOutlined } from '@ant-design/icons-vue'
+import {
+  GithubOutlined,
+  WechatOutlined,
+  HomeOutlined
+} from '@ant-design/icons-vue'
 import HelloWorld from './components/HelloWorld.vue'
 export default {
   name: 'App',
@@ -31,8 +35,7 @@ export default {
   setup() {
     return {
       jump(url) {
-        const tempwindow = window.open('_blank')
-        tempwindow.location= url
+        window.open(url, '_blank')
       }
     }
   }

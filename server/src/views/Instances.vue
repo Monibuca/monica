@@ -74,8 +74,17 @@
         </a-card>
       </a-row>
     </a-layout-content>
-    <a-empty v-if="instances.length == 0" style="marginTop: 20vh; font-size: 20px" description="你还没有实例哦，快点击下面按钮，去创建实例吧！">
-      <a-button size="large" style="marginTop: 30px; font-size: 20px" @click="$router.push('/create')">创建新实例</a-button>
+    <a-empty
+      v-if="instances.length == 0"
+      style="margintop: 20vh; font-size: 20px"
+      description="你还没有实例哦，快点击下面按钮，去创建实例吧！"
+    >
+      <a-button
+        size="large"
+        style="margintop: 30px; font-size: 20px"
+        @click="$router.push('/create')"
+        >创建新实例</a-button
+      >
     </a-empty>
     <a-layout-footer v-if="instances.length">
       <a-button @click="$router.push('/create')">创建新实例</a-button>
@@ -178,7 +187,7 @@ export default {
       .startWith(0)
       .switchMap(() =>
         rx
-          .fetch('/api/instance/list')
+          .fromFetch('/api/instance/list')
           .switchMap((x) => rx.fromPromise(x.json()))
       )
       .takeUntil(unmountedOb)
@@ -205,9 +214,7 @@ export default {
       fetch('/api/instance/start?name=' + instance.Name, {
         method: 'POST'
       })
-        .then((response) => {
-          return response.json()
-        })
+        .then((response) => response.json())
         .then((data) => {
           // code 是 1 代表失败
           if (data.code != 0) {

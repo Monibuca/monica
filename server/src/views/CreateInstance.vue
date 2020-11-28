@@ -15,16 +15,31 @@
           <p>这个目录本质上就是一个项目工程目录</p>
           <p>如果你需要手动执行 shell 命令，请在该目录下执行</p>
           <p>框内默认的路径是用户根目录也就是 cd ~ 后的目录</p>
-          <p style="font-size:18px;">如何选择目录：</p>
-          <p style="font-size:18px;">选择存在的目录：请把鼠标聚焦在上面输入框内，会自动搜索关联目录，然后选中你想要的目录，按 enter 或者鼠标点击进行选中</p>
-          <p style="font-size:18px;">选择不存在的目录：只需要在你选择存在的目录后自己输入 /xxx 即可完成选择</p>
+          <p style="font-size: 18px">如何选择目录：</p>
+          <p style="font-size: 18px">
+            选择存在的目录：请把鼠标聚焦在上面输入框内，会自动搜索关联目录，然后选中你想要的目录，按
+            enter 或者鼠标点击进行选中
+          </p>
+          <p style="font-size: 18px">
+            选择不存在的目录：只需要在你选择存在的目录后自己输入 /xxx
+            即可完成选择
+          </p>
         </a-tab-pane>
         <a-tab-pane key="2" tab="起名称">
           <a-input v-model:value="name"></a-input>
         </a-tab-pane>
         <a-tab-pane key="3" tab="选插件">
-          <a-button type="primary" ghost style="margin-right: 20px;" @click="selectAll">选中所有插件</a-button>
-          <a-button type="primary" ghost @click="selectNone">取消所有选中</a-button>
+          <a-button
+            type="primary"
+            ghost
+            style="margin-right: 20px"
+            @click="selectAll"
+            >选中所有插件</a-button
+          >
+          <a-button type="primary" ghost @click="selectNone"
+            >取消所有选中</a-button
+          >
+          部分选择插件功能正在开发中，您的选择并不会产生效果
           <a-list item-layout="horizontal" :data-source="plugins">
             <template v-slot:renderItem="{ item, index }">
               <a-list-item>
@@ -77,7 +92,9 @@
         <a-button v-else :loading="creating" @click="startCreate">
           开始创建
         </a-button>
-        <a-button style="margin-left: 20px;" @click="$router.push('/instances')">进入实例列表页面</a-button>
+        <a-button style="margin-left: 20px" @click="$router.push('/instances')"
+          >进入实例列表页面</a-button
+        >
       </template>
       <a-button type="link" style="float: right" @click="$router.go(-1)">
         <template v-slot:icon><ExportOutlined /></template> 退出创建
@@ -89,8 +106,6 @@
 import { ref, watch, getCurrentInstance, reactive, watchEffect } from 'vue'
 import PathSelector from '../components/PathSelector.vue'
 import { RightOutlined, ExportOutlined } from '@ant-design/icons-vue'
-import fastrx from 'fastrx'
-const rx = fastrx.rx
 export default {
   components: {
     PathSelector,
@@ -242,7 +257,9 @@ ListenAddr = "192.168.1.120:5060"`)
           if (evt.data == 'success') {
             creating.value = false
             eventSource.close()
-            $message.success('创建完成点击下方进入实例列表页面按钮，去实例管理页面启动实例哦')
+            $message.success(
+              '创建完成点击下方进入实例列表页面按钮，去实例管理页面启动实例哦'
+            )
           }
         }
         eventSource.addEventListener('exception', (evt) => {
@@ -255,10 +272,10 @@ ListenAddr = "192.168.1.120:5060"`)
         })
       },
       selectNone() {
-        plugins.value.forEach( item => item.selected = false)
+        plugins.value.forEach((item) => (item.selected = false))
       },
       selectAll() {
-        plugins.value.forEach( item => item.selected = true)
+        plugins.value.forEach((item) => (item.selected = true))
       }
     }
   }

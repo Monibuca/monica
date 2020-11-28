@@ -12,30 +12,36 @@
             v-for="(checkItem, i) in checkList"
             :key="i"
             :color="['grey', 'blue', 'green', 'red'][checkItem.status]"
-            ><component
-              :is="checkItem.component"
-              v-bind="checkItem.props"
-            ></component
+            ><CheckTag v-bind="checkItem"></CheckTag
           ></a-timeline-item>
         </a-timeline>
-        <a-row type="flex" justify="center">
-          <router-link class="btn" v-if="!checking" to="/instances">下一步</router-link>
+        <a-row type="flex" justify="center" v-if="!checking">
+          <router-link class="btn" v-if="allGood" to="/instances"
+            >下一步</router-link
+          >
+          <a-button class="btn" type="link" v-else @click="checkAgain"
+            >重新检查</a-button
+          >
         </a-row>
       </a-card>
       <p class="tip">
-        操作提示： <br>
-        1、如果你的Go环境配置都是正确的，那就点击上面的下一步，进行实例创建和管理哦 <br/>
-        2、启动 monica 命令 一定要以管理员的身份启动，不然创建实例会失败。管理员启动教学如下：<br/>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;window电脑: 自行搜索<br/>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mac电脑: https://www.jianshu.com/p/f5e09261a064 <br/>
-        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;按照上面链接教程设置好后 终端执行 su root 然后再执行 monica 命令 启动实例管理器<br/>
+        操作提示： <br />
+        1、如果你的Go环境配置都是正确的，那就点击上面的下一步，进行实例创建和管理哦
+        <br />
+        2、启动 monica 命令
+        一定要以管理员的身份启动，不然创建实例会失败。管理员启动教学如下：<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;window电脑: 自行搜索<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mac电脑:
+        https://www.jianshu.com/p/f5e09261a064 <br />
+        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;按照上面链接教程设置好后 终端执行 su
+        root 然后再执行 monica 命令 启动实例管理器<br />
       </p>
     </a-layout-content>
   </a-layout>
 </template>
 <script>
 import { LoadingOutlined, InfoCircleOutlined } from '@ant-design/icons-vue'
-import { reactive, ref, h } from 'vue'
+import { reactive, ref, h, computed } from 'vue'
 import fastrx from 'fastrx'
 import { CheckTag } from '../components/CheckItem'
 const rx = fastrx.rx
@@ -53,83 +59,72 @@ export default {
         '检查GO111MODULE',
         '检查GOPATH',
         '检查GOPROXY'
-      ].map((text) => ({
+      ].map((text, i) => ({
         text,
+        index: i,
         status: 0,
-        component: () => text
+        tag: ''
       }))
     )
-    rx.concat(
-      rx
-        .fetch('/api/getGoVersion')
-        .switchMap((response) => rx.fromPromise(response.text()))
-        .tap((x) => {
-          const g = /go(\d+)\.(\d+)\.(\d+)/.exec(x)
-          if (g) {
-            checkList[0].component = 'CheckTag'
-            checkList[0].props = {
-              text: checkList[0].text,
-              tag: `${g[1]}.${g[2]}.${g[3]}`,
-              color: '#87d068'
-            }
-            if (g[1] == 1 && g[2] >= 13) {
-              checkList[0].status = 2
+    const checkAgainHandler = rx.eventHandler(false)
+    checkAgainHandler
+      .tap(() => (checking.value = true))
+      .switchMapTo(
+        rx
+          .fromFetch('/api/getGoVersion')
+          .switchMap((response) => rx.fromPromise(response.text()))
+          .tap((x) => {
+            const g = /go(\d+)\.(\d+)\.(\d+)/.exec(x)
+            if (g) {
+              checkList[0].tag = `${g[1]}.${g[2]}.${g[3]}`
+              if (g[1] == 1 && g[2] >= 13) {
+                checkList[0].status = 2
+              } else {
+                checkList[0].status = 3
+              }
             } else {
               checkList[0].status = 3
-              checkList[0].props.color = '#F50'
             }
-          } else {
-            checkList[0].status = 3
-          }
-        }),
-      rx
-        .fetch('/api/getGoEnv')
-        .switchMap((response) => rx.fromPromise(response.text()))
-        .tap((x) => {
-          x = JSON.parse(x)
-          let g = /GO111MODULE=(.*)/.exec(x)
-          checkList[1].component = 'CheckTag'
-          checkList[1].props = {
-            text: checkList[1].text,
-            tag: g[1] ? g[1] : '自动',
-            color: '#87d068'
-          }
-          checkList[1].status = 2
-          g = /GOPATH=(.*)/.exec(x)
-          checkList[2].component = 'CheckTag'
-          checkList[2].props = {
-            text: checkList[2].text,
-            tag: g[1],
-            color: '#87d068'
-          }
-          checkList[2].status = 2
-          if (!g[1]) {
-            checkList[2].props.color = '#F50'
-            checkList[2].status = 3
-          }
-          g = /GOPROXY=(.*)/.exec(x)
-          checkList[3].component = 'CheckTag'
-          checkList[3].props = {
-            text: checkList[3].text,
-            tag: g[1],
-            color: '#87d068'
-          }
-          checkList[3].status = 2
-          if (!g[1]) {
-            checkList[3].props.color = '#F50'
-            checkList[3].status = 3
-          }
-        })
-    ).subscribe(
-      () => {},
-      (err) => {
-        checking.value = false
-      },
-      () => {
-        checking.value = false
-      }
-    )
-    return { checkList, checking }
+          })
+      )
+      .switchMapTo(
+        rx
+          .fromFetch('/api/getGoEnv')
+          .switchMap((response) => rx.fromPromise(response.text()))
+          .tap((x) => {
+            x = JSON.parse(x)
+            let g = /GO111MODULE=(.*)/.exec(x)
+            checkList[1].tag = g && g[1] ? g[1] : '自动'
+            checkList[1].status = 2
+            g = /GOPATH=(.*)/.exec(x)
+            checkList[2].tag = g ? g[1] : ''
+            checkList[2].status = 2
+            if (!g || !g[1]) {
+              checkList[2].status = 3
+            }
+            g = /GOPROXY=(.*)/.exec(x)
+            checkList[3].tag = g ? g[1] : ''
+            checkList[3].status = 2
+            if (!g || !g[1]) {
+              checkList[3].status = 3
+            }
+          })
+      )
+      .subscribe(
+        () => {
+          checking.value = false
+        },
+        (err) => {
+          checking.value = false
+        }
+      )
+    checkAgainHandler.handler()
+    return {
+      checkList,
+      checking,
+      allGood: computed(() => checkList.every((x) => x.status == 2)),
+      checkAgain: checkAgainHandler.handler
+    }
   }
 }
 </script>
