@@ -35,7 +35,7 @@ monica
 
 启动后，打开 [http://localhost:3000](http://localhost:3000) 会看到下面的界面
 
-![r1](./images/r1.gif)
+![r1](./docs/images/r1.gif)
 
 这就是创建实例管理器的欢迎页面，它会帮助你检查你本地的 `go` 环境是否正确配置。
 
@@ -53,7 +53,7 @@ go env -w GOPROXY="https://goproxy.io,direct"
 
 点击下一步后，进入实例管理页面，展示如下图：
 
-![没有实例界面](./images/r2.png)
+![没有实例界面](./docs/images/r2.png)
 
 这时，你会发现，你还没有创建的实例，你需要点击 **创建新实例** 按钮进行创建实例
 
@@ -61,7 +61,7 @@ go env -w GOPROXY="https://goproxy.io,direct"
 
 点击 **创建新实例** 按钮进行实例创建，创建界面如下图所示：
 
-![创建实例界面](./images/r3.png)
+![创建实例界面](./docs/images/r3.png)
 
 图中的各个模块已经用箭头加文字进行了说明。这里我们来进行一次实例创建。大家请往下看：
 
@@ -70,7 +70,7 @@ go env -w GOPROXY="https://goproxy.io,direct"
 
 鼠标聚焦在输入框时，就会进行路径联想，并把联想结果显示出来，如下图所示：
 
-![step2-1](./images/r4.png)
+![step2-1](./docs/images/r4.png)
 
 > 这里，默认填充目录是用户根目录，也就是 `cd ~` 所在的目录。
 
@@ -78,7 +78,7 @@ go env -w GOPROXY="https://goproxy.io,direct"
 
 如，我们选择了不存在的目录路径，是 `/var/root/yk-kaiyuan/root-test-6` ，如下图所示： 
 
-![step2-1](./images/r5.png)
+![step2-1](./docs/images/r5.png)
 
 至此我们的实例目录就确定好了，下面开始确定实例名称
 
@@ -86,7 +86,7 @@ go env -w GOPROXY="https://goproxy.io,direct"
 
 点击下一步或者直接点击起名称，会进入起名称步骤，如下图所示：
 
-![step2-2](./images/r6.png)
+![step2-2](./docs/images/r6.png)
 
 这里会自动把实例目录名充到实例名称名上，一般情况下不需要做修改，如果想修改，可以直接在输入框中进行修改实例名称。
 
@@ -98,7 +98,7 @@ go env -w GOPROXY="https://goproxy.io,direct"
 
 点击下一步或者直接点击选择插件，会进入选插件步骤，如下图所示：
 
-![step2-3](./images/r7.png)
+![step2-3](./docs/images/r7.png)
 
 这里会自动选中常用的插件，建议不做修改，全部采用默认的选择，如果你是新手，更应该如此，此处不要做改动，直接使用默认选择。
 
@@ -106,7 +106,7 @@ go env -w GOPROXY="https://goproxy.io,direct"
 
 点击下一步或者直接点击改配置，会进入改配置步骤，如下图所示：
 
-![step2-4](./images/r8.png)
+![step2-4](./docs/images/r8.png)
 
 这里会自动填充默认的配置，如果这是你第一个创建的实例，建议不做修改，全部采用默认的配置。如果你是新手，更应该如此，此处不要做改动，直接使用默认配置。
 
@@ -114,11 +114,11 @@ go env -w GOPROXY="https://goproxy.io,direct"
 
 点击下一步或者直接点击创建，会进入创建步骤，如下图所示：
 
-![step2-5](./images/r9.png)
+![step2-5](./docs/images/r9.png)
 
 看上图，进入创建步骤后，点击下面 **开始创建** 按钮，进行实例的创建，点击 **开始创建**，出现下图：
 
-![step2-5](./images/r10.png)
+![step2-5](./docs/images/r10.png)
 
 这时，注意有一个确认过程，提示你确认是否清空实例所在的目录，这里清空是用的 `rm -rf` 。**如果该目录本身就是空目录，则无所谓。否则，请确保你的实例目录不是根目录，确保实例目录可以清空。**
 
@@ -130,7 +130,7 @@ go env -w GOPROXY="https://goproxy.io,direct"
 
 这里，我的是新建目录，所以点击 `Yes`  即可，点击后，即开始创建实例，创建过程如下动图演示：
 
-![step2-5](./images/r11.gif)
+![step2-5](./docs/images/r11.gif)
 
 需要同时满足下面两个条件，才能表明实例创建成功：
 
@@ -145,11 +145,11 @@ go env -w GOPROXY="https://goproxy.io,direct"
 
 成功创建实例后，点击 **进入实例列表页面** 按钮进入实例列表页面，如下图所示：
 
-![实例管理](./images/r12.png)
+![实例管理](./docs/images/r12.png)
 
 会看到刚才创建的实例，已经在列表页面里了，大家一定很好奇，这个实例上的一些操作按钮是什么意识。别着急，只需要把鼠标移到操作按钮上面，就可以显示此操作按钮解释，下图是未启动时的操作按钮解释：
 
-![实例管理](./images/r13.png)
+![实例管理](./docs/images/r13.png)
 
 下面对这些操作按钮进行详细阐述：
 
@@ -157,7 +157,7 @@ go env -w GOPROXY="https://goproxy.io,direct"
 
 点击 **实例配置修改** 按钮，会出现下图所示的弹窗：
 
-![实例管理](./images/r14.png)
+![实例管理](./docs/images/r14.png)
 
 我们可以在此弹窗里面进行相关配置的修改，修改完后，点击 `OK` 即可完成配置修改。
 
@@ -166,7 +166,7 @@ go env -w GOPROXY="https://goproxy.io,direct"
 
 点击 **实例依赖更新** 按钮，会出现下图所示的弹窗：
 
-![实例管理](./images/r15.png)
+![实例管理](./docs/images/r15.png)
 
 只要点击此按钮，就会开始自动更新依赖，更新完成后，点击`OK` 即可完成实例依赖更新。
 
@@ -174,7 +174,7 @@ go env -w GOPROXY="https://goproxy.io,direct"
 
 点击 **实例删除** 按钮，会出现下图所示的弹窗：
 
-![实例管理](./images/r16.png)
+![实例管理](./docs/images/r16.png)
 
 出现这个确认提示，大家应该都明白是啥意识了哈，点击 `Yes` 的话，就将进行实例删除操作。删除完成后，实例页面将不会显示该实例。
 
@@ -182,19 +182,19 @@ go env -w GOPROXY="https://goproxy.io,direct"
 
 在实例未开启状态下，点击 **实例启动开关** 按钮，会出现如下动图演示：
 
-![实例管理](./images/r17.gif)
+![实例管理](./docs/images/r17.gif)
 
 会发现，实例开启成功，也就是运行起来了，实例开启按钮由灰变成高亮，同时右侧出现创建实例成功提示，提示信息是底层创建的成功日志。
 
 如果实例开启失败呢，开启失败的场景如下图所示：
 
-![实例管理](./images/r18.png)
+![实例管理](./docs/images/r18.png)
 
 会发现，实例开启失败，实例开启按钮没有从灰变成高亮，同时右侧出现创建实例失败提示，提示信息是底层创建的失败日志，同时下面会有该实例开启失败的解决方案。大家请参考解决方案去解决实例开启失败的问题。
 
 实例开启成功后，操作按钮会有变化，下图是启动成功后的操作按钮解释：
 
-![实例管理](./images/r19.png)
+![实例管理](./docs/images/r19.png)
 
 下面对这些操作按钮进行详细阐述：
 
@@ -202,7 +202,7 @@ go env -w GOPROXY="https://goproxy.io,direct"
 
 点击 **重启实例** 按钮，会出现下图所示的弹窗：
 
-![实例管理](./images/r20.png)
+![实例管理](./docs/images/r20.png)
 
 出现这个确认提示，大家应该都明白是啥意识了哈，点击 `Yes` 的话，就将进行实例重启操作
 
@@ -210,7 +210,7 @@ go env -w GOPROXY="https://goproxy.io,direct"
 
 点击 **实例操作面板** 按钮，会进入实例操作面板页面，如下图所示：
 
-![实例操作面板](./images/r21.png)
+![实例操作面板](./docs/images/r21.png)
 
 至此，实例管理的所有步骤已经阐述完了，下面我们将进入实例操作面板页面，进行实例操作教学
 
@@ -218,7 +218,7 @@ go env -w GOPROXY="https://goproxy.io,direct"
 
 下图展示的是实例操作面板页面：
 
-![实例操作面板](./images/r22.png)
+![实例操作面板](./docs/images/r22.png)
 
 下面会对页面中的主要构成部分进行阐述：
 
@@ -268,21 +268,21 @@ sudo ffmpeg -re -stream_loop -1 -i test.mp4 -vcodec copy -acodec copy -f flv rtm
 
 会看到如下动图演示：
 
-![实例操作面板案例](./images/r23.gif)
+![实例操作面板案例](./docs/images/r23.gif)
 
 当执行命令后，我们会发现，实例操作面板页面发生了变化，变成了下图所示的样子：
 
-![实例操作面板案例](./images/r24.png)
+![实例操作面板案例](./docs/images/r24.png)
 
 这说明我们用 `ffmpeg` 成功的把流推到了 **monibuca** 上， **monibuca** 监听到后，会通知操作页面去展示该推流，并且提供 **预览** 和 **中止** 操作。
 
 我们点击 **预览** 按钮，会出现下图所示的弹窗：
 
-![实例操作面板案例](./images/r25.png)
+![实例操作面板案例](./docs/images/r25.png)
 
 弹窗里面会展示播放地址，同时弹窗底部提供了各种模式的预览按钮，这里我们点击 **jessibuca** 按钮进行实时预览，如下图所示：
 
-![实例操作面板案例](./images/r26.png)
+![实例操作面板案例](./docs/images/r26.png)
 
 至此，我们完整的走完了环境搭建、实例创建、实例管理、实例操作的全流程，以及一个推流加实时预览的小案例，小伙伴们是不是非常心动哈，赶快按照此教程从头体验一遍哦。
 
