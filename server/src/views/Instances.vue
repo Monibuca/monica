@@ -125,9 +125,14 @@
               />
               <template v-else-if="Array.isArray(v)">
                 <div>{{ JSON.stringify(v) }}</div>
-                <a-input v-for="(v1, index) in v" :key="k + index">
-                  v-model:value="v[index]"
-                </a-input>
+                <div class="array-item" v-for="(v1, index) in plugin[k]" :key="k + index">
+                  <a-input v-model:value="plugin[k][index]">
+                  </a-input>
+                  <MinusCircleOutlined
+                    class="dynamic-delete-button"
+                    @click="removeDomain(index, k, name)"
+                  />
+                </div>
                 <a-button type="link" @click="v.push('')">+</a-button>
               </template>
             </a-form-item>
@@ -158,7 +163,8 @@ import {
   LoadingOutlined,
   FileAddOutlined,
   DesktopOutlined,
-  CloudDownloadOutlined
+  CloudDownloadOutlined,
+  MinusCircleOutlined
 } from '@ant-design/icons-vue'
 import { notification } from 'ant-design-vue'
 export default {
@@ -171,7 +177,8 @@ export default {
     LoadingOutlined,
     FileAddOutlined,
     DesktopOutlined,
-    CloudDownloadOutlined
+    CloudDownloadOutlined,
+    MinusCircleOutlined
   },
   setup() {
     const instances = ref([])
@@ -367,6 +374,10 @@ export default {
             (e) => e.target.close(),
             () => {}
           )
+      },
+      removeDomain(index, k, name) {
+        console.log(index,k,name)
+        result.currentInstance.config[name][k].splice(index, 1);
       }
     }
     return result
@@ -377,5 +388,24 @@ export default {
 <style>
 .ant-notification-topRight {
   width: 40vw;
+}
+.array-item {
+  position: relative;
+}
+.array-item .dynamic-delete-button {
+  cursor: pointer;
+  position: absolute;
+  right: -40px;
+  top: 6px;
+  font-size: 24px;
+  color: #999;
+  transition: all 0.3s;
+}
+.array-item .dynamic-delete-button:hover {
+  color: #777;
+}
+.array-item .dynamic-delete-button[disabled] {
+  cursor: not-allowed;
+  opacity: 0.5;
 }
 </style>
