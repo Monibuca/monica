@@ -2,7 +2,7 @@
   "name": "monica",
   "version": "0.0.0",
   "scripts": {
-    "start": "node index.js",
+    "start": "ts-node index.ts",
     "dev": "vite",
     "build": "vite build"
   },

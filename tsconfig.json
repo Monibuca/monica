@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es2017",
+    "noImplicitAny": false,
+    "outDir": "./dist",
+    "sourceMap": false,
+    "allowJs": true,
+    "newLine": "LF"
+  },
+  "include": [
+    "server/index.ts",
+    "server/runScript.ts",
+    "server/template.ts"
+  ]
+}

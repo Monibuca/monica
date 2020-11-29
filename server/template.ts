@@ -37,14 +37,14 @@ func main() {
 `
 
 if (os.platform() == 'win32') {
-  exports.restart = function (name) {
+  exports.restart = function (name: string) {
 	return `
 	  if exist shutdown.bat call shutdown.bat
 	  start ${name}.exe
 	`
   }
 } else
-  exports.restart = function (name) {
+  exports.restart = function (name: string) {
 	return `
 	  if [ -f "shutdown.sh" ];then
     ./shutdown.sh
@@ -52,3 +52,5 @@ if (os.platform() == 'win32') {
     nohup ./${name} > debug.log 2>&1 &
   `
 }
+
+export {}
