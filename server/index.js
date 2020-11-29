@@ -15,11 +15,11 @@ const instanceMap = new Map()
 const { koaEventStream } = require('fastrx/extention')
 const { rx, concat, catchError, map, pipe } = require('fastrx')
 const scriptExt = os.platform() == 'win32' ? 'bat' : 'sh'
-// shell.ln(
-//   '-sf',
-//   path.join(__dirname, '../node_modules'),
-//   path.join(__dirname, './node_modules')
-// )
+shell.ln(
+  '-sf',
+  path.join(__dirname, '../node_modules'),
+  path.join(__dirname, './node_modules')
+)
 process.chdir(__dirname)
 if (!fs.existsSync(instancesDir))
   fs.mkdirSync(instancesDir, { recursive: true })
