@@ -1,18 +1,12 @@
-# Monibuca 可视化实例管理器
+# Monica————Monibuca 可视化实例管理器
 
-# 快速起步
+- monica是一个用来创建和管理Monibuca实例的工具，方便新入门Monibuca系统的用户使用，可以快速搭建好Golang环境和快速运行一个全功能版本的Monibuca。
+- monica采用Node.Js和Vue3.0技术开发，所以安装monica不需要golang环境，但是Monibuca是纯Go的系统，所以需要搭建Go环境。
 
-## 项目地址
-
-[https://github.com/Monibuca](https://github.com/Monibuca)
-
-## 主页
-
-[https://monibuca.com](https://monibuca.com)
-
-## 介绍
+## Monibuca介绍
+[官方网站https://monibuca.com](https://monibuca.com)
 **Monibuca** 是一个开源的流媒体服务器开发框架，适用于快速定制化开发流媒体服务器，可以对接 `CDN` 厂商，作为回源服务器，也可以自己搭建集群部署环境。
-丰富的内置插件提供了流媒体服务器的常见功能，例如 `rtmp server` 、 `http-flv` 、视频录制、 `QoS` 等。除此以外还内置了后台 `web` 界面，方便观察服务器运行的状态。
+丰富的内置插件提供了流媒体服务器的常见功能，例如 `rtmp server` 、 `http-flv` 、视频录制、`webRTC`、 `GB28181` 等。除此以外还内置了后台 `web` 界面，方便观察服务器运行的状态。
 也可以自己开发后台管理界面，通过 `api` 方式获取服务器的运行信息。
 **Monibuca** 提供了可供定制化开发的插件机制，可以任意扩展其功能。
 
