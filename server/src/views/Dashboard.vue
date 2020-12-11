@@ -138,7 +138,7 @@
     <ul>
       <li>rtmp://{{ urls.rtmp }}/{{ currentStream.StreamPath }}</li>
       <li>http://{{ urls.gateway }}/hls/{{ currentStream.StreamPath }}.m3u8</li>
-      <li>http://{{ urls.hdl }}/hls/{{ currentStream.StreamPath }}.flv</li>
+      <li>http://{{ urls.hdl }}/{{ currentStream.StreamPath }}.flv</li>
       <li>ws://{{ urls.jessica }}/{{ currentStream.StreamPath }}.flv</li>
     </ul>
     <template #footer>
