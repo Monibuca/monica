@@ -15,6 +15,8 @@ const instanceMap = new Map()
 const { koaEventStream } = require('fastrx/extention')
 const { rx, concat, catchError, map, pipe } = require('fastrx')
 const scriptExt = os.platform() == 'win32' ? 'bat' : 'sh'
+const updater = require('pkg-updater')
+const pkg = require('../package.json') 
 shell.ln(
   '-sf',
   path.join(__dirname, '../node_modules'),
@@ -292,12 +294,18 @@ const myPlugin = ({
   })
 }
 
-createServer({
-  cssPreprocessOptions: {
-    less: {
-      javascriptEnabled: true
-    }
-  },
-  configureServer: [myPlugin]
-}).listen(3000)
-console.log("server start at port:3000")
+updater({
+  pkg: pkg,
+  level: 'minor'
+}).then(() => {
+  /* 在这里启动命令行工具 */
+  createServer({
+    cssPreprocessOptions: {
+      less: {
+        javascriptEnabled: true
+      }
+    },
+    configureServer: [myPlugin]
+  }).listen(3000)
+  console.log('server start at port:3000')
+})
