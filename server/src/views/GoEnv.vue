@@ -13,7 +13,11 @@
             :key="i"
             :color="['grey', 'blue', 'green', 'red'][checkItem.status]"
             ><CheckTag v-bind="checkItem"></CheckTag
-          ></a-timeline-item>
+          >
+          <span v-if="checkItem.text == '检查GOPROXY' && checkItem.status == 2">
+            请确保你使用的代理地址能成功获取 go 依赖，推荐使用 https://goproxy.io,direct
+          </span>
+          </a-timeline-item>
         </a-timeline>
         <a-row type="flex" justify="center" v-if="!checking">
           <router-link class="btn" v-if="allGood" to="/instances"
@@ -28,7 +32,9 @@
         操作提示： <br />
         1、如果你的Go环境配置都是正确的，那就点击上面的下一步，进行实例创建和管理哦
         <br />
-        2、启动 monica 命令
+        2、检查GOPROXY处，就算显示检查成功了，也要自己检查下，此代理是否能正常使用，如使用 https://proxy.golang.org,direct ，在没有翻墙的情况下是无法使用的，推荐使用 https://goproxy.io,direct
+        <br />
+        3、启动 monica 命令
         一定要以管理员的身份启动，不然创建实例会失败。管理员启动教学如下：<br />
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;window电脑: 自行搜索<br />
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mac电脑:
