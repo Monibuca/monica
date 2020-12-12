@@ -185,6 +185,7 @@ RemoteAddr = "rtsp://admin:admin@192.168.1.212:554/cam/realmonitor?channel=1&sub
 StreamPath = "live/rtsp"
 #[[RTSP.AutoPullList]]
 #URL = "rtsp://admin:admin@192.168.1.212:554/cam/realmonitor?channel=1&subtype=1"
+#StreamPath = "live/rtsp2"
 [WebRTC]
 # 公网IP地址
 PublicIP = ["127.0.0.1"]
