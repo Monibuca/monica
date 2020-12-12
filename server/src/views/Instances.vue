@@ -145,7 +145,7 @@
       v-model:visible="visible.update"
       @ok="visible.update = false"
     >
-      <pre width="80" v-html="updateLog" style="max-height: 50vh"></pre>
+      <pre v-html="updateLog" style="max-height: 50vh"></pre>
       <span v-if="updateLog.search('timeout') > -1">
         检测到更新依赖出现超时，请查看更新日志内容，确保成功更新依赖 <br/>
         提示：出现超时，一般和 GOPROXY 代理设置有关，请修改代理设置，并使配置生效，然后再重新运行monica命令
@@ -417,5 +417,10 @@ export default {
 }
 .ant-modal {
   width: 70vw !important;
+}
+
+pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
 }
 </style>
