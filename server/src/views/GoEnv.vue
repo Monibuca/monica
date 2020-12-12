@@ -15,7 +15,9 @@
             ><CheckTag v-bind="checkItem"></CheckTag
           >
           <span v-if="checkItem.text == '检查GOPROXY' && checkItem.status == 2">
-            请务必确保代理地址能正常获取 go 依赖，否则会导致后面实例获取依赖失败！！推荐使用 https://goproxy.io,direct
+            <br>
+            1、请务必确保代理地址能正常获取 go 依赖，否则会导致后面实例获取依赖失败！<br>
+            2、修改完代理设置后，需要使代理配置生效，然后再重新运行monica命令
           </span>
           </a-timeline-item>
         </a-timeline>
