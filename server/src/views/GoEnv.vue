@@ -15,7 +15,7 @@
             ><CheckTag v-bind="checkItem"></CheckTag
           >
           <span v-if="checkItem.text == '检查GOPROXY' && checkItem.status == 2">
-            请确保你使用的代理地址能成功获取 go 依赖，推荐使用 https://goproxy.io,direct
+            请务必确保代理地址能正常获取 go 依赖，否则会导致后面实例获取依赖失败！！推荐使用 https://goproxy.io,direct
           </span>
           </a-timeline-item>
         </a-timeline>
