@@ -31,6 +31,7 @@
     "koa-router": "^9.4.0",
     "less": "^3.12.2",
     "less-loader": "^7.0.1",
+    "pkg-updater": "^1.0.4",
     "rollup": "^2.33.3",
     "shelljs": "^0.8.4",
     "vite": "^1.0.0-rc.9",
