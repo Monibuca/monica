@@ -240,7 +240,7 @@ export default {
               text =
                 '解决方案：该实例某些插件端口和其他正在运行实例插件端口有冲突，需要你进行端口调整，避免启动的插件有端口重复'
             notification['error']({
-              message: '创建实例失败',
+              message: '启动实例失败',
               description: '失败提示：' + data.msg,
               onClick: () => {
                 console.log('Notification Clicked!')
@@ -345,7 +345,7 @@ export default {
                 text =
                   '解决方案：该实例某些插件端口和其他正在运行实例插件端口有冲突，需要你进行端口调整，避免启动的插件有端口重复'
               notification['error']({
-                message: '创建实例失败',
+                message: '重启实例失败',
                 duration: 7,
                 description: '失败提示：' + data.msg,
                 onClick: () => {
@@ -355,7 +355,7 @@ export default {
               })
             } else {
               notification['success']({
-                message: '已重启实例',
+                message: '已成功重启实例',
                 duration: 7,
                 description: '成功提示：' + data.msg
               })

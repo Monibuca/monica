@@ -285,7 +285,10 @@ const myPlugin = ({
           path.join(instancesDir, name + '.toml'),
           toml.stringify({ Name: name, Path: dir })
         )
-        .map(() => 'data: success')
+        .map(() => {
+          let isExist = fs.existsSync(`${dir}/${name}`)
+          return isExist ? 'data: success' : 'data: fail'
+        })
     )
     return catchError((err) =>
       rx.of('event: exception\ndata: ' + err.toString())

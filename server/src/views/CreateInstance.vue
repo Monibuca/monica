@@ -106,6 +106,7 @@
 import { ref, watch, getCurrentInstance, reactive, watchEffect } from 'vue'
 import PathSelector from '../components/PathSelector.vue'
 import { RightOutlined, ExportOutlined } from '@ant-design/icons-vue'
+import { notification } from 'ant-design-vue'
 export default {
   components: {
     PathSelector,
@@ -255,12 +256,25 @@ ListenAddr = "192.168.1.120:5060"`)
         eventSource.onopen = () => steps.forEach((s.log = ''))
         eventSource.onmessage = (evt) => {
           steps[currentStep.value].log += evt.data + '\n'
+          console.log("eventSource.onmessage -> evt.data", evt.data)
           if (evt.data == 'success') {
             creating.value = false
             eventSource.close()
             $message.success(
               '创建完成点击下方进入实例列表页面按钮，去实例管理页面启动实例哦'
             )
+          } else if (evt.data == 'fail') {
+            creating.value = false
+            eventSource.close()
+            notification['error']({
+              message: '创建实例失败',
+              duration: 7,
+              onClick: () => {
+                console.log('Notification Clicked!')
+              },
+              btn: `解决方案：请检查页面上执行 go build 时的输出日志，注意是否出现如超时
+              timeout、can not contain package、nohub: ./xxx: No such file or dir等输出，如出现，请检查 GOPROXY 是否可以正常获取依赖，如不能，则改用可获取依赖的GOPROXY，推荐 https://goproxy.io,direct`
+            })
           }
         }
         eventSource.addEventListener('exception', (evt) => {
