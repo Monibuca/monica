@@ -307,7 +307,7 @@ export default {
                 text =
                   '解决方案：该实例某些插件端口和其他正在运行实例插件端口有冲突，需要你进行端口调整，避免启动的插件有端口重复'
               notification['error']({
-                message: '创建实例失败',
+                message: '启动实例失败',
                 duration: 7,
                 description: '失败提示：' + data.msg,
                 onClick: () => {
@@ -317,9 +317,9 @@ export default {
                 btn: text
               })
             } else {
-              $message.success('创建实例成功')
+              $message.success('启动实例成功')
               notification['success']({
-                message: '创建实例成功',
+                message: '启动实例成功',
                 duration: 7,
                 description: '成功提示：' + data.msg
               })
@@ -383,7 +383,6 @@ export default {
           )
       },
       removeDomain(index, k, name) {
-        console.log(index,k,name)
         result.currentInstance.config[name][k].splice(index, 1);
       }
     }
