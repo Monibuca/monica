@@ -6,6 +6,7 @@
     allowClear
     @change="onInput"
     @focus="focus"
+    @blur="blur"
     open
   />
 </template>
@@ -43,6 +44,9 @@ export default {
       },
       focus(ctx) {
         search(ctx.target.value)
+      },
+      blur(ctx) {
+        candidate.value = []
       }
     }
   }
