@@ -75,8 +75,15 @@ function getAllInstance() {
  * @param {*} instancesDir 实例目录
  */
 async function readLastLog(instancesDir) {
-  await delay(200)
+  await delay(1500)
   const logPath = path.join(instancesDir, 'debug.log')
+  if (!fs.existsSync(logPath)) {
+     return {
+       msg: '启动实例成功',
+       // 创建成功
+       code: 0
+     }
+  }
   const text = fs.readFileSync((logPath), 'utf-8')
   const index = text.indexOf('permission denied')
   const index2 = text.indexOf('already in use')
