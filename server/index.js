@@ -13,6 +13,8 @@ const homedir = os.homedir()
 const instancesDir = path.join(homedir, '.monibuca')
 const instanceMap = new Map()
 const { koaEventStream } = require('fastrx/extention')
+const open = require('open')
+
 const { rx, concat, catchError, map, pipe } = require('fastrx')
 const scriptExt = os.platform() == 'win32' ? 'bat' : 'sh'
 const updater = require('pkg-updater')
@@ -316,6 +318,8 @@ updater({
       }
     },
     configureServer: [myPlugin]
-  }).listen(3000)
+  }).listen(3000).then(() => {
+    open(`http://localhost:3000/`, { app: 'google chrome' })
+  })
   console.log('server start at port:3000')
 })
