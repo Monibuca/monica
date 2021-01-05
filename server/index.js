@@ -18,7 +18,7 @@ const open = require('open')
 const { rx, concat, catchError, map, pipe } = require('fastrx')
 const scriptExt = os.platform() == 'win32' ? 'bat' : 'sh'
 const updater = require('pkg-updater')
-const pkg = require('../package.json') 
+const pkg = require('../package.json')
 shell.ln(
   '-sf',
   path.join(__dirname, '../node_modules'),
@@ -29,8 +29,8 @@ if (!fs.existsSync(instancesDir))
   fs.mkdirSync(instancesDir, { recursive: true })
 
 async function delay(time) {
-  return new Promise(function(resolve, reject) {
-    setTimeout(function(){
+  return new Promise(function (resolve, reject) {
+    setTimeout(function () {
       resolve();
     }, time);
   });
@@ -80,11 +80,11 @@ async function readLastLog(instancesDir) {
   await delay(1500)
   const logPath = path.join(instancesDir, 'debug.log')
   if (!fs.existsSync(logPath)) {
-     return {
-       msg: '启动实例成功',
-       // 创建成功
-       code: 0
-     }
+    return {
+      msg: '启动实例成功',
+      // 创建成功
+      code: 0
+    }
   }
   const text = fs.readFileSync((logPath), 'utf-8')
   const index = text.indexOf('permission denied')
@@ -288,7 +288,7 @@ const myPlugin = ({
           toml.stringify({ Name: name, Path: dir })
         )
         .map(() => {
-          let isExist = fs.existsSync(`${dir}/${name}`)
+          let isExist = fs.existsSync(`${dir}/${name}${os.platform() == 'win32' ? '.exe' : ''}`)
           return isExist ? 'data: success' : 'data: fail'
         })
     )
