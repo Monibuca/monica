@@ -22,7 +22,7 @@
           </a-timeline-item>
         </a-timeline>
         <a-row type="flex" justify="center" v-if="!checking">
-          <router-link class="btn" v-if="allGood" to="/instances"
+          <router-link class="btn" v-if="allGood" to="/instances" @click="none"
             >下一步</router-link
           >
           <a-button class="btn" type="link" v-else @click="checkAgain"
@@ -60,6 +60,23 @@ export default {
     CheckTag
   },
   setup() {
+    const waiFu = document.getElementById('waifu')
+    if (window.location.hash == '#/') {
+      waiFu.style.display = 'block'
+    } else waiFu.style.display = 'none'
+
+    // 处理浏览器返回
+    window.addEventListener(
+      'popstate',
+      function (e) {
+        console.log(9999);
+        if (window.location.hash == '#/') {
+          waiFu.style.display = 'block'
+        } else waiFu.style.display = 'none'
+      },
+      false
+    )
+
     const checking = ref(true)
     const checkList = reactive(
       [
@@ -131,7 +148,10 @@ export default {
       checkList,
       checking,
       allGood: computed(() => checkList.every((x) => x.status == 2)),
-      checkAgain: checkAgainHandler.handler
+      checkAgain: checkAgainHandler.handler,
+      none() {
+        waiFu.style.display = 'none'
+      }
     }
   }
 }

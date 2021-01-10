@@ -6,6 +6,7 @@ import GoEnv from './views/GoEnv.vue'
 import Instances from './views/Instances.vue'
 import CreateInstance from './views/CreateInstance.vue'
 import Dashboard from './views/Dashboard.vue'
+
 const router = createRouter({
   history: createWebHashHistory(),
   routes: [
