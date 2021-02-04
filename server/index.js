@@ -18,11 +18,11 @@ const { rx, concat, catchError, map, pipe } = require('fastrx')
 const scriptExt = os.platform() == 'win32' ? 'bat' : 'sh'
 const updater = require('pkg-updater')
 const pkg = require('../package.json')
-shell.ln(
-  '-sf',
-  path.join(__dirname, '../node_modules'),
-  path.join(__dirname, './node_modules')
-)
+// shell.ln(
+//   '-sf',
+//   path.join(__dirname, '../node_modules'),
+//   path.join(__dirname, './node_modules')
+// )
 process.chdir(__dirname)
 if (!fs.existsSync(instancesDir))
   fs.mkdirSync(instancesDir, { recursive: true })
@@ -318,7 +318,10 @@ updater({
     },
     configureServer: [myPlugin]
   }).listen(3000).then(() => {
-    open(`http://localhost:3000/`, { app: 'google chrome' })
+    try {
+      open(`http://localhost:3000/`, { app: 'google chrome' })
+    } catch (error) {
+    }
   })
   console.log('server start at port:3000')
 })
