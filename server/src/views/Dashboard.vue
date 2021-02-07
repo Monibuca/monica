@@ -246,6 +246,7 @@ export default {
       .switchMap((c) => {
         config.value = c
         urln.forEach((x) => {
+          if (!c[x]) return
           const addr = c[x].ListenAddr.split(':')
           if (!addr[0]) {
             addr[0] = location.hostname
@@ -294,7 +295,7 @@ export default {
       visibles: reactive({ webrtc: false, flvjs: false, jessibuca: false }),
       gotoGateway() {
         const tempwindow = window.open('_blank')
-        tempwindow.location= '//' + urls.gateway
+        tempwindow.location = '//' + urls.gateway
       },
       stop(item) {
         fetch(
