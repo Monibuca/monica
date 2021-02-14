@@ -138,8 +138,8 @@
     <ul>
       <li>rtmp://{{ urls.rtmp }}/{{ currentStream.StreamPath }}</li>
       <li>http://{{ urls.gateway }}/hls/{{ currentStream.StreamPath }}.m3u8</li>
-      <li>http://{{ urls.hdl }}/{{ currentStream.StreamPath }}.flv</li>
-      <li>ws://{{ urls.jessica }}/{{ currentStream.StreamPath }}.flv</li>
+      <li>http://{{ urls.hdl }}/hdl/{{ currentStream.StreamPath }}.flv</li>
+      <li>ws://{{ urls.jessica }}/jesscia/jesscia/{{ currentStream.StreamPath }}.flv</li>
     </ul>
     <template #footer>
       H5预览：
@@ -173,7 +173,7 @@
         <template #content>
           <FlvJS
             :visible="visibles.flvjs"
-            :url="`ws://${urls.jessica}/${currentStream.StreamPath}.flv`"
+            :url="`ws://${urls.jessica}/jesscia/${currentStream.StreamPath}.flv`"
           />
         </template>
         <a-button>Flv.js</a-button>
@@ -186,7 +186,7 @@
         <template #content>
           <Jessibuca
             :visible="visibles.jessibuca"
-            :url="`ws://${urls.jessica}/${currentStream.StreamPath}`"
+            :url="`ws://${urls.jessica}/jesscia/${currentStream.StreamPath}`"
           />
         </template>
         <a-button>Jessibuca</a-button>
@@ -247,11 +247,15 @@ export default {
         config.value = c
         urln.forEach((x) => {
           if (!c[x]) return
+          const p = x.toLowerCase()
+          if (!c[x].ListenAddr) {
+            urls[p] = urls.gateway
+            return
+          }
           const addr = c[x].ListenAddr.split(':')
           if (!addr[0]) {
             addr[0] = location.hostname
           }
-          const p = x.toLowerCase()
           urls[p] =
             protocols[p] && protocols[p] == addr[1] ? addr[0] : addr.join(':')
         })
