@@ -99,9 +99,9 @@ export default {
           .fromFetch('/api/getGoVersion')
           .switchMap((response) => rx.fromPromise(response.text()))
           .tap((x) => {
-            const g = /go(\d+)\.(\d+)\.(\d+)/.exec(x)
+            const g = /go(\d+)\.(\d+)/.exec(x)
             if (g) {
-              checkList[0].tag = `${g[1]}.${g[2]}.${g[3]}`
+              checkList[0].tag = `${g[1]}.${g[2]}`
               if (g[1] == 1 && g[2] >= 13) {
                 checkList[0].status = 2
               } else {
