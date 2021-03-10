@@ -202,7 +202,7 @@ ListenAddr = "192.168.1.120:5060"`)
     fetch('/api/getHomeDir')
       .then((x) => x.text())
       .then((x) => (path.value = x))
-    fetch('https://plugins.monibuca.com/recommend')
+    fetch('http://plugins.monibuca.com/recommend')
       .then((x) => x.json())
       .then((x) => (plugins.value = x.map((y) => ((y.selected = true), y))))
     const clearDir = ref(true)
@@ -256,7 +256,7 @@ ListenAddr = "192.168.1.120:5060"`)
         eventSource.onopen = () => steps.forEach((s.log = ''))
         eventSource.onmessage = (evt) => {
           steps[currentStep.value].log += evt.data + '\n'
-          console.log("eventSource.onmessage -> evt.data", evt.data)
+          console.log('eventSource.onmessage -> evt.data', evt.data)
           if (evt.data == 'success') {
             creating.value = false
             eventSource.close()

@@ -2120,14 +2120,6 @@ open@^7.2.1:
     is-docker "^2.0.0"
     is-wsl "^2.1.1"
 
-open@^7.3.0:
-  version "7.3.1"
-  resolved "https://registry.npm.taobao.org/open/download/open-7.3.1.tgz?cache=0&sync_timestamp=1610003151241&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fopen%2Fdownload%2Fopen-7.3.1.tgz#111119cb919ca1acd988f49685c4fdd0f4755356"
-  integrity sha1-EREZy5GcoazZiPSWhcT90PR1U1Y=
-  dependencies:
-    is-docker "^2.0.0"
-    is-wsl "^2.1.1"
-
 ora@^5.1.0:
   version "5.1.0"
   resolved "https://registry.npm.taobao.org/ora/download/ora-5.1.0.tgz?cache=0&sync_timestamp=1599423047162&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fora%2Fdownload%2Fora-5.1.0.tgz#b188cf8cd2d4d9b13fd25383bc3e5cba352c94f8"

@@ -157,14 +157,8 @@ export default {
 }
 </script>
 <style scoped>
-@keyframes cardA {
-  to {
-    transform: scaleY(1);
-  }
-}
+
 .box-card {
-  transform: scaleY(0);
-  animation: cardA 0.5s ease 1s forwards;
   overflow: hidden;
   width: 60%;
   margin: auto;
