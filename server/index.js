@@ -269,6 +269,18 @@ const myPlugin = ({
       rx
         .of(null)
         .switchMap(() => {
+          const childProcess = shell.exec('go mod tidy', { async: true, cwd: dir })
+          return rx
+            .merge(
+              rx.fromEvent(childProcess.stdout, 'data'),
+              rx.fromEvent(childProcess.stderr, 'data')
+            )
+            .takeUntil(rx.fromEvent(childProcess, 'exit'))
+        })
+        .map((data) => 'data: ' + data),
+      rx
+        .of(null)
+        .switchMap(() => {
           const childProcess = shell.exec('go build', { async: true, cwd: dir })
           return rx
             .merge(
