@@ -179,6 +179,7 @@ const myPlugin = ({
         .takeUntil(rx.fromEvent(childProcess, 'exit'))
     const dataO1 = getDataO(childProcess)
     const dataO2 = rx((sink) => {
+      sink.next(shell.exec('go mod tidy', { async: true, cwd: instance.Path }))
       sink.next(shell.exec('go build', { async: true, cwd: instance.Path }))
       sink.complete()
     }).switchMap(getDataO)
