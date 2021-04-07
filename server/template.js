@@ -26,9 +26,9 @@ func main() {
 	addr := flag.String("c", "", "config file")
 	flag.Parse()
 	if *addr == "" {
-		_, currentFile, _, _ := runtime.Caller(0)
-		configFile := filepath.Join(filepath.Dir(currentFile), "config.toml")
-		Run(configFile)
+		// _, currentFile, _, _ := runtime.Caller(0)
+		// configFile := filepath.Join(filepath.Dir(currentFile), "config.toml")
+		Run(filepath.Join(filepath.Dir(os.Args[0]), "config.toml"))
 	} else {
 		Run(*addr)
 	}
