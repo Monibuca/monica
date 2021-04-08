@@ -5,7 +5,7 @@ import (
 	"flag"
 	_ "net/http/pprof"
 	"path/filepath"
-	"runtime"
+	"os"
 
 	. "github.com/Monibuca/engine/v2"
 	_ "github.com/Monibuca/plugin-cluster"
