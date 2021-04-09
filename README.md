@@ -4,7 +4,8 @@
 - monica采用Node.Js和Vue3.0技术开发，所以安装monica不需要golang环境，但是Monibuca是纯Go的系统，所以需要搭建Go环境。
 
 ## Monibuca介绍
-[官方网站https://monibuca.com](https://monibuca.com)
+>[官方网站: https://monibuca.com](https://monibuca.com)
+
 **Monibuca** 是一个开源的流媒体服务器开发框架，适用于快速定制化开发流媒体服务器，可以对接 `CDN` 厂商，作为回源服务器，也可以自己搭建集群部署环境。
 丰富的内置插件提供了流媒体服务器的常见功能，例如 `rtmp server` 、 `http-flv` 、视频录制、`webRTC`、 `GB28181` 等。除此以外还内置了后台 `web` 界面，方便观察服务器运行的状态。
 也可以自己开发后台管理界面，通过 `api` 方式获取服务器的运行信息。
@@ -25,6 +26,21 @@ monica
 
 **mac 电脑如何进入 root 身份：**<br>
 [https://www.jianshu.com/p/f5e09261a064](https://www.jianshu.com/p/f5e09261a064) ，按照链接教程设置好后，在终端执行 `su root` 然后再执行 `monica` 命令 启动实例管理器
+
+**使用docker快速构建**<br>
+```sh
+sudo docker run -itd --name monica-ist \
+-p 3000:3000 \
+-p 1935:1935 \
+-p 5060:5060 \
+-p 554:554 \
+-p 2019:2019 \
+-p 2020:2020 \
+-p 8080:8080 \
+-p 8081:8081 \
+-p 58200-58300:58200-58300 \
+ monibuca/monica
+```
 
 启动后，打开 [http://localhost:3000](http://localhost:3000) 会看到下面的界面
 
