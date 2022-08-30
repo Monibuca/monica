@@ -35,7 +35,7 @@
     "pkg-updater": "^1.0.4",
     "rollup": "^2.33.3",
     "shelljs": "^0.8.4",
-    "vite": "^1.0.0-rc.9",
+    "vite": "^2.9.13",
     "vue": "^3.0.2",
     "vue-router": "^4.0.0-beta.13"
   },
